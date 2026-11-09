@@ -6,7 +6,7 @@ import AppKit
 public final class UpdateChecker: ObservableObject {
     public static let shared = UpdateChecker()
 
-    public let currentVersion = "1.8.5"
+    public let currentVersion = "1.8.6"
     
     /// GitHub kullanıcı adı ve depo adı (GitHub'a deploy ettiğinizde burayı veya UserDefaults'u güncelleyebilirsiniz)
     @Published public var repoSlug: String {

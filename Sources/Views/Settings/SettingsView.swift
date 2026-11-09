@@ -940,6 +940,16 @@ private struct AboutSettingsPane: View {
             return body
         }
         return """
+        ## 🚀 UnPack v1.8.6
+
+        Arşiv içerisindeki dosyaları harici uygulamalarda doğrudan düzenleme, canlı dosya izleme ve arşivi anında güncelleme özellikleri eklendi.
+
+        ### ✏️ Canlı Arşiv İçi Dosya Düzenleme (In-Place Edit)
+        - ⚡ **Varsayılan Uygulamayla Aç & Düzenle:** Arşivdeki herhangi bir dosyayı TextEdit, VS Code, Xcode veya sistem varsayılan uygulamanızla doğrudan açıp düzenleyebilirsiniz.
+        - 👁️ **Anlık Değişiklik Algılama:** Düzenlenen dosyanın kaydedilmesi durumunda dosya boyutu, değişiklik tarihi ve SHA-256 hash kontrolleriyle anında tespit edilir.
+        - 🔔 **Akıllı Güncelleme Onay Bandı:** Düzenleme yapıldığında arşiv gezgininde yerel bir onay bandı belirir; tek tıkla arşivi güncelleyebilir veya değişikliği yoksayabilirsiniz.
+        - ⚙️ **Otomatik Güncelleme Tercihi:** Tercihler > Genel sekmesinden düzenlenen dosyaların onay sorulmadan doğrudan arşive işlenmesi seçilebilir.
+
         ## 🚀 UnPack v1.8.5
 
         Yapay zeka arayüz klişelerinden (AI slop) tamamen arındırılmış, macOS Human Interface Guidelines (HIG) standartlarında zarif ve yerel Apple tasarım dili.
