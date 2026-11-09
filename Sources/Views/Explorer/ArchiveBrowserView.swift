@@ -4,6 +4,7 @@ import AppKit
 /// WinRAR tarzı tam donanımlı Arşiv Gezgini Görünümü (Explorer Mode, Drag Out, Multi-part ve Quick Look destekli)
 public struct ArchiveBrowserView: View {
     @ObservedObject private var settings = AppSettings.shared
+    @ObservedObject private var editManager = InPlaceEditManager.shared
     public let archiveURL: URL?
     public let items: [ArchiveItem]
     public let metadata: ArchiveMetadata?
@@ -254,6 +255,64 @@ public struct ArchiveBrowserView: View {
                 .padding(.top, 4)
             }
 
+            // Arşiv İçi Dosya Düzenleme & Canlı Güncelleme Onay Bandı
+            if let pending = editManager.pendingChanges.first(where: { $0.archiveURL == archiveURL }) {
+                HStack(spacing: 10) {
+                    Image(systemName: "pencil.and.outline")
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundColor(.blue)
+                        .font(.system(size: 13, weight: .semibold))
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("‘\(pending.fileName)’ dosyasında değişiklik yapıldı.")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundColor(.primary)
+                        Text("Yapılan değişiklikleri doğrudan bu arşivin içine kaydetmek istiyor musunuz?")
+                            .font(.system(size: 10))
+                            .foregroundColor(.secondary)
+                    }
+
+                    Spacer()
+
+                    if editManager.isUpdating {
+                        ProgressView()
+                            .controlSize(.small)
+                            .padding(.trailing, 4)
+                    } else {
+                        Button("Yoksay") {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                editManager.discardChange(pending)
+                            }
+                        }
+                        .buttonStyle(.bordered)
+                        .controlSize(.small)
+
+                        Button(action: {
+                            Task {
+                                await editManager.applyUpdate(for: pending)
+                            }
+                        }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "arrow.triangle.2.circlepath")
+                                Text("Arşivi Güncelle")
+                            }
+                            .font(.system(size: 11, weight: .semibold))
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.blue)
+                        .controlSize(.small)
+                    }
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 7)
+                .background(
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .fill(Color.blue.opacity(0.12))
+                )
+                .padding(.horizontal, 10)
+                .padding(.top, 4)
+            }
+
             // 2. Yol & Arama Çubuğu (Breadcrumb)
             BreadcrumbBar(
                 archiveName: archiveURL?.lastPathComponent ?? "Arşiv",
@@ -302,9 +361,13 @@ public struct ArchiveBrowserView: View {
                             onOpenFile: { item in
                                 Task {
                                     guard let arcURL = archiveURL else { return }
-                                    if let extractedURL = try? await ArchiveManager.shared.extractItemForPreview(archiveURL: arcURL, item: item) {
-                                        await MainActor.run {
-                                            _ = NSWorkspace.shared.open(extractedURL)
+                                    do {
+                                        try await InPlaceEditManager.shared.startEditing(archiveURL: arcURL, item: item)
+                                    } catch {
+                                        if let extractedURL = try? await ArchiveManager.shared.extractItemForPreview(archiveURL: arcURL, item: item) {
+                                            await MainActor.run {
+                                                _ = NSWorkspace.shared.open(extractedURL)
+                                            }
                                         }
                                     }
                                 }
@@ -332,9 +395,13 @@ public struct ArchiveBrowserView: View {
                             onOpenFile: { item in
                                 Task {
                                     guard let arcURL = archiveURL else { return }
-                                    if let extractedURL = try? await ArchiveManager.shared.extractItemForPreview(archiveURL: arcURL, item: item) {
-                                        await MainActor.run {
-                                            _ = NSWorkspace.shared.open(extractedURL)
+                                    do {
+                                        try await InPlaceEditManager.shared.startEditing(archiveURL: arcURL, item: item)
+                                    } catch {
+                                        if let extractedURL = try? await ArchiveManager.shared.extractItemForPreview(archiveURL: arcURL, item: item) {
+                                            await MainActor.run {
+                                                _ = NSWorkspace.shared.open(extractedURL)
+                                            }
                                         }
                                     }
                                 }

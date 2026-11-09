@@ -372,6 +372,13 @@ public struct MainView: View {
             .onReceive(NotificationCenter.default.publisher(for: .macRARDeleteSelected)) { _ in
                 deleteSelectedItems()
             }
+            .onReceive(NotificationCenter.default.publisher(for: .unpackArchiveModifiedInPlace)) { notif in
+                if let arcURL = notif.object as? URL {
+                    loadArchive(from: arcURL)
+                } else if let arcURL = openedArchiveURL {
+                    loadArchive(from: arcURL)
+                }
+            }
             .onReceive(NotificationCenter.default.publisher(for: .macRARRefresh)) { _ in
                 if let arcURL = openedArchiveURL { loadArchive(from: arcURL) }
             }

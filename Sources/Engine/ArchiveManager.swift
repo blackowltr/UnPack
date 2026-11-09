@@ -254,6 +254,93 @@ public actor ArchiveManager {
         }
     }
 
+    // MARK: - Arşiv İçi Dosya Düzenleme & Güncelleme (In-Place Edit Update)
+
+    public func updateItemInArchive(
+        archiveURL: URL,
+        item: ArchiveItem,
+        localFileURL: URL,
+        rootTempDir: URL
+    ) async throws {
+        let ext = archiveURL.pathExtension.lowercased()
+
+        // 1. RAR Arşivi (Official rar binary gereklidir)
+        if ext == "rar" {
+            guard let rarBin = UnrarEngine.availableRarPath else {
+                throw NSError(
+                    domain: "UnPack",
+                    code: 4001,
+                    userInfo: [NSLocalizedDescriptionKey: "RAR arşivlerini doğrudan güncellemek için resmi RARLab komut satırı aracının sistemde kurulu olması gerekmektedir."]
+                )
+            }
+            try await Task.detached(priority: .userInitiated) {
+                let process = Process()
+                process.executableURL = URL(fileURLWithPath: rarBin)
+                process.currentDirectoryURL = rootTempDir
+                process.arguments = ["u", "-ep1", "-y", archiveURL.path, item.path]
+                try process.run()
+                process.waitUntilExit()
+                if process.terminationStatus != 0 && process.terminationStatus != 1 {
+                    throw NSError(domain: "UnPack", code: 4002, userInfo: [NSLocalizedDescriptionKey: "RAR arşivi güncellenemedi (\(process.terminationStatus))."])
+                }
+            }.value
+            return
+        }
+
+        // 2. 7-Zip İkilisi Mevcutsa (ZIP, 7Z, TAR vb. tüm formatlar için en hızlı ve güvenli)
+        if let sevenZip = SevenZipEngine.available7zPath {
+            try await Task.detached(priority: .userInitiated) {
+                let process = Process()
+                process.executableURL = URL(fileURLWithPath: sevenZip)
+                process.currentDirectoryURL = rootTempDir
+                process.arguments = ["u", "-y", archiveURL.path, item.path]
+                try process.run()
+                process.waitUntilExit()
+                if process.terminationStatus != 0 {
+                    throw NSError(domain: "UnPack", code: 4003, userInfo: [NSLocalizedDescriptionKey: "Arşiv 7-Zip ile güncellenemedi (\(process.terminationStatus))."])
+                }
+            }.value
+            return
+        }
+
+        // 3. Standart ZIP (macOS Yerleşik /usr/bin/zip)
+        if ext == "zip" {
+            try await Task.detached(priority: .userInitiated) {
+                let process = Process()
+                process.executableURL = URL(fileURLWithPath: "/usr/bin/zip")
+                process.currentDirectoryURL = rootTempDir
+                var env = ProcessInfo.processInfo.environment
+                env["COPYFILE_DISABLE"] = "1"
+                env["COPY_EXTENDED_ATTRIBUTES_DISABLE"] = "1"
+                process.environment = env
+                process.arguments = ["-r", archiveURL.path, item.path]
+                try process.run()
+                process.waitUntilExit()
+                if process.terminationStatus != 0 && process.terminationStatus != 12 {
+                    throw NSError(domain: "UnPack", code: 4004, userInfo: [NSLocalizedDescriptionKey: "ZIP arşivi güncellenemedi."])
+                }
+            }.value
+            return
+        }
+
+        // 4. Standart TAR
+        if ext == "tar" {
+            try await Task.detached(priority: .userInitiated) {
+                let process = Process()
+                process.executableURL = URL(fileURLWithPath: "/usr/bin/tar")
+                process.arguments = ["-uf", archiveURL.path, "-C", rootTempDir.path, item.path]
+                try process.run()
+                process.waitUntilExit()
+                if process.terminationStatus != 0 {
+                    throw NSError(domain: "UnPack", code: 4005, userInfo: [NSLocalizedDescriptionKey: "TAR arşivi güncellenemedi."])
+                }
+            }.value
+            return
+        }
+
+        throw NSError(domain: "UnPack", code: 4006, userInfo: [NSLocalizedDescriptionKey: "Bu arşiv formatı doğrudan güncellemeyi desteklemiyor."])
+    }
+
     // MARK: - Arşivden Dosya Silme (Delete Items)
 
     public func deleteItems(from archiveURL: URL, items: [ArchiveItem]) async throws {

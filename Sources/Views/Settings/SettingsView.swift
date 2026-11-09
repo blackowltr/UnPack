@@ -362,6 +362,19 @@ private struct GeneralSettingsPane: View {
                             .toggleStyle(.switch)
                             .labelsHidden()
                     }
+
+                    CardRowDivider()
+
+                    SettingsRow(
+                        icon: "pencil.and.outline",
+                        iconColor: .purple,
+                        title: "Düzenlenen Dosyaları Otomatik Güncelle",
+                        subtitle: "Arşiv içinde açılıp harici uygulamalarda kaydedilen dosyaları sormadan doğrudan arşive işler."
+                    ) {
+                        Toggle("", isOn: $settings.autoUpdateEditedFilesInArchive)
+                            .toggleStyle(.switch)
+                            .labelsHidden()
+                    }
                 }
             }
         }

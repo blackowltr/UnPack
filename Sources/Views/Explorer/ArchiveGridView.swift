@@ -212,7 +212,7 @@ private struct GridItemCard: View {
         }
         .contextMenu {
             if !item.isDirectory {
-                Button("Varsayılan Uygulama ile Aç (Enter)") {
+                Button("Varsayılan Uygulama ile Aç / Düzenle (Enter)") {
                     onDoubleTap()
                 }
                 Button("Quick Look ile Önizle (Boşluk)") {

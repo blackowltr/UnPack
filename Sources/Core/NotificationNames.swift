@@ -23,6 +23,7 @@ extension Notification.Name {
     public static let unpackShowOnboarding = Notification.Name("unpackShowOnboarding")
     public static let unpackRepair = Notification.Name("unpackRepair")
     public static let unpackSecurity = Notification.Name("unpackSecurity")
+    public static let unpackArchiveModifiedInPlace = Notification.Name("unpackArchiveModifiedInPlace")
 
     // Coffer Uyumluluğu
     public static let cofferNewArchive = unpackNewArchive

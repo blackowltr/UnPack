@@ -164,7 +164,7 @@ public struct ArchiveTableView: View {
                 }
                 .contextMenu {
                     if !item.isDirectory {
-                        Button("Varsayılan Uygulama ile Aç (Enter)") {
+                        Button("Varsayılan Uygulama ile Aç / Düzenle (Enter)") {
                             onOpenFile(item)
                         }
                         Button("Quick Look ile Önizle (Boşluk)") {

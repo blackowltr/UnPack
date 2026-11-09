@@ -40,6 +40,9 @@ public final class AppSettings: ObservableObject {
     @AppStorage("autoEnableSpaceSaverOnLowDisk") public var autoEnableSpaceSaverOnLowDisk: Bool = true
     @AppStorage("spaceSaverSafetyMarginMB") public var spaceSaverSafetyMarginMB: Int = 512
 
+    // MARK: - Canlı Arşiv İçi Düzenleme (In-Place Edit)
+    @AppStorage("autoUpdateEditedFilesInArchive") public var autoUpdateEditedFilesInArchive: Bool = false
+
     private init() {}
 
     public enum AppTheme: String, CaseIterable, Identifiable {
