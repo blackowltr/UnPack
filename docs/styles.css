@@ -4,9 +4,7 @@
  * finish-review: subagent · 8 findings · 8 resolved · gap: none
  * axes: light/grotesk-sans/cool · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
 /* Hallmark · pre-emit critique: P5 H4 E4 S4 R5 V5 · weakest: S, hero canvas alone could read as generic dev infra; anchored it beside UnPack Explorer capture and xattr command chip */
-/* Hallmark · dropped blackowltr/c, #ozellikler, #simulasyon, ozellikler, simulasyon, cmd-text, main-screenshot-img, ql-filename, ql-overlay, onclick, oninput, sim-, ql-, smart-demo, btn-smart, active-folder-label, copy-btn, screen-, tab-, table-search, total-count-badge, lightbox- · replaced legacy repository URLs and hand-drawn DOM simulator with UnPack v1.8.6 Retina captures and semantic controls */
-@import url("./tokens.css");
-@import url("./base.css");
+/* Hallmark · dropped blackowltr/c, #ozellikler, #simulasyon, ozellikler, simulasyon, cmd-text, main-screenshot-img, ql-filename, ql-overlay, onclick, oninput, sim-, ql-, smart-demo, btn-smart, active-folder-label, copy-btn, screen-, tab-, table-search, total-count-badge, lightbox- · replaced legacy repository URLs and hand-drawn DOM simulator with UnPack v1.9.0 Retina captures and semantic controls */
 
 strong,
 b {
@@ -899,6 +897,8 @@ html:not(.js) .hero__field {
 
 .shot-dialog {
   max-width: min(92vw, 1180px);
+  max-height: 90vh;
+  overflow: auto;
   width: 100%;
   padding: var(--space-lg);
   border: var(--rule-hair) solid var(--color-rule-2);
@@ -926,8 +926,11 @@ html:not(.js) .hero__field {
 }
 
 .shot-dialog__stage img {
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  max-height: 78vh;
   height: auto;
+  margin-inline: auto;
   border-radius: var(--radius-input);
   border: var(--rule-hair) solid var(--color-rule);
 }

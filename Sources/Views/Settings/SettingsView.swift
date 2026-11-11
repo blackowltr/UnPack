@@ -948,6 +948,16 @@ private struct AboutSettingsPane: View {
             return body
         }
         return """
+        ## UnPack v1.9.0
+
+        macOS Human Interface Guidelines standartlarına uygun yerel arayüz yenilemesi, Canlı Arşiv İçi Dosya Düzenleme ve güncellenmiş dokümantasyonla sunulan kararlı sürüm.
+
+        ### Özgün macOS Arayüzü & Sürüm Yenilikleri
+        - **Saf Apple Tasarım Dili:** Gezgin, Tercihler, Onboarding, Sıkıştırma, Çıkarma ve İlerleme pencerelerinden gereksiz süslemeler kaldırıldı; standart macOS tipografisi ve yerel kontroller uygulandı.
+        - **Canlı Arşiv İçi Düzenleme (In-Place Edit):** Arşivdeki dosyaları harici uygulamalarda düzenleyip anlık SHA-256 ve değişiklik takibiyle tek tıkla arşive geri işleyin.
+        - **Yerel Güncelleme & Sürüm Notları Görünümü:** Markdown sürüm notları, indirme ilerleme penceresi ve otomatik DMG kurulumu sistem standartlarıyla hizalandı.
+        - **Retina Ekran Görüntüleri & Dokümantasyon:** Uygulama ekran görüntüleri ve web tanıtım sayfası `v1.9.0` sürümüyle birebir güncellendi.
+
         ## UnPack v1.8.6
 
         Arşiv içerisindeki dosyaları harici uygulamalarda doğrudan düzenleme, canlı dosya izleme ve arşivi anında güncelleme özellikleri eklendi.
