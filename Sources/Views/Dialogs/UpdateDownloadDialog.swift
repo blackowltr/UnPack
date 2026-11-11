@@ -7,8 +7,6 @@ public struct UpdateDownloadDialog: View {
     @ObservedObject private var downloadManager = UpdateDownloadManager.shared
     public let onDismiss: () -> Void
 
-    @State private var isPulsing: Bool = false
-
     public init(onDismiss: @escaping () -> Void) {
         self.onDismiss = onDismiss
     }
@@ -51,13 +49,6 @@ public struct UpdateDownloadDialog: View {
         }
         .frame(width: 560, height: 490)
         .background(Color(NSColor.windowBackgroundColor))
-        .onAppear {
-            if settings.enableAnimations {
-                withAnimation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true)) {
-                    isPulsing = true
-                }
-            }
-        }
     }
 
     // MARK: - 1. Üst Başlık Bölümü
@@ -65,21 +56,13 @@ public struct UpdateDownloadDialog: View {
         HStack(spacing: 16) {
             // Apple Tasarımlı Yuvarlatılmış Kare Simge
             ZStack {
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [accentColor.opacity(0.85), accentColor],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 52, height: 52)
-                    .shadow(color: accentColor.opacity(0.3), radius: 6, y: 3)
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(accentColor.opacity(0.12))
+                    .frame(width: 48, height: 48)
 
                 Image(systemName: iconForCurrentState)
-                    .font(.system(size: 24, weight: .semibold))
-                    .foregroundColor(.white)
-                    .scaleEffect(isPulsing && isDownloadingState ? 1.08 : 1.0)
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundColor(accentColor)
             }
 
             VStack(alignment: .leading, spacing: 4) {
@@ -95,11 +78,6 @@ public struct UpdateDownloadDialog: View {
 
             Spacer()
         }
-    }
-
-    private var isDownloadingState: Bool {
-        if case .downloading = downloadManager.state { return true }
-        return false
     }
 
     private var iconForCurrentState: String {
@@ -226,9 +204,9 @@ public struct UpdateDownloadDialog: View {
         let body = downloadManager.releaseInfo?.body ?? ""
         if body.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             return """
-            ### ✨ Genel Güncelleme
-            - ⚡ **Performans ve Kararlılık:** Bu sürüm bellek optimizasyonları, arayüz geliştirmeleri ve genel kararlılık düzeltmeleri içerir.
-            - 💻 **Evrensel Uyumluluk:** Apple Silicon M1–M4 ve Intel işlemcili tüm Mac bilgisayarlarla tam uyumludur.
+            ### Genel Güncelleme
+            - **Performans ve Kararlılık:** Bu sürüm bellek optimizasyonları, arayüz geliştirmeleri ve genel kararlılık düzeltmeleri içerir.
+            - **Evrensel Uyumluluk:** Apple Silicon M1–M4 ve Intel işlemcili tüm Mac bilgisayarlarla tam uyumludur.
             """
         }
         return body
@@ -248,13 +226,7 @@ public struct UpdateDownloadDialog: View {
                             .frame(height: 10)
 
                         Capsule()
-                            .fill(
-                                LinearGradient(
-                                    colors: [accentColor.opacity(0.85), accentColor],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
+                            .fill(accentColor)
                             .frame(width: max(0, min(geo.size.width * CGFloat(progress), geo.size.width)), height: 10)
                             .animation(.easeOut(duration: 0.2), value: progress)
                     }

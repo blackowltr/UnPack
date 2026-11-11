@@ -136,7 +136,7 @@ public final class CompressionSimulator: Sendable {
         case .rar:
             formatMultiplier = 0.82
             baseThroughputMBps = 240.0
-            formatBadge = "👑 Orijinal WinRAR"
+            formatBadge = "RAR5 Motoru"
             formatDesc = "Resmi RAR5 formatı. Güçlü sıkıştırma, kurtarma kaydı ve şifreleme desteği."
             formatCompScore = 0.90
             formatSpeedScore = 0.80
@@ -144,7 +144,7 @@ public final class CompressionSimulator: Sendable {
         case .tar:
             formatMultiplier = 1.0
             baseThroughputMBps = 900.0
-            formatBadge = "📦 Saf Paketleme"
+            formatBadge = "Saf Paketleme"
             formatDesc = "Sıkıştırmasız arşiv. Dosyaları salt tek parça haline getirir, sıfır CPU harcar."
             formatCompScore = 0.05
             formatSpeedScore = 1.0
@@ -152,7 +152,7 @@ public final class CompressionSimulator: Sendable {
         case .tarGz:
             formatMultiplier = 0.92
             baseThroughputMBps = 420.0
-            formatBadge = "⚡️ Ultra Hızlı Gzip"
+            formatBadge = "Yüksek Hızlı Gzip"
             formatDesc = "Unix ve sunucu standardı. Çok çekirdekli iş parçacıklarıyla yüksek hızda arşivleme sağlar."
             formatCompScore = 0.72
             formatSpeedScore = 0.92
@@ -160,7 +160,7 @@ public final class CompressionSimulator: Sendable {
         case .zip:
             formatMultiplier = 1.0
             baseThroughputMBps = 320.0
-            formatBadge = "🌐 Evrensel Standart"
+            formatBadge = "Evrensel Standart"
             formatDesc = "macOS, Windows, iOS ve Android'de harici araç gerektirmeden açılır. En uyumlu formattır."
             formatCompScore = 0.65
             formatSpeedScore = 0.85
@@ -168,7 +168,7 @@ public final class CompressionSimulator: Sendable {
         case .tarBz2:
             formatMultiplier = 0.85
             baseThroughputMBps = 140.0
-            formatBadge = "📚 Bzip2 Derin Sıkıştırma"
+            formatBadge = "Bzip2 Derin Sıkıştırma"
             formatDesc = "Metin, kod ve veritabanı dökümlerinde ZIP'e göre %20-30 daha küçük arşiv üretir."
             formatCompScore = 0.85
             formatSpeedScore = 0.55
@@ -176,7 +176,7 @@ public final class CompressionSimulator: Sendable {
         case .tarXz:
             formatMultiplier = 0.78
             baseThroughputMBps = 65.0
-            formatBadge = "💎 Maksimum LZMA2"
+            formatBadge = "Maksimum LZMA2"
             formatDesc = "En küçük arşiv boyutu için gelişmiş LZMA algoritması. İşlem süresi daha uzundur."
             formatCompScore = 0.98
             formatSpeedScore = 0.35
@@ -184,7 +184,7 @@ public final class CompressionSimulator: Sendable {
         case .sevenZip:
             formatMultiplier = 0.80
             baseThroughputMBps = 80.0
-            formatBadge = "🗜️ 7-Zip LZMA"
+            formatBadge = "7-Zip LZMA"
             formatDesc = "Modern ve yüksek verimli sıkıştırma mimarisi."
             formatCompScore = 0.94
             formatSpeedScore = 0.45

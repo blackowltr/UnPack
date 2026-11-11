@@ -86,7 +86,7 @@ public struct ArchiveFooterBar: View {
                     LiquidGlassFormatBadge(format: meta.format, size: .small)
 
                     if meta.isSolid {
-                        StatusFlagPill(text: "Katı (Solid)", color: .purple)
+                        StatusFlagPill(text: "Katı (Solid)", color: .secondary)
                     }
 
                     if meta.hasEncryptedHeaders {
@@ -94,7 +94,7 @@ public struct ArchiveFooterBar: View {
                     }
 
                     if meta.isMultiVolume || meta.volumeCount > 1 {
-                        StatusFlagPill(text: "\(meta.volumeCount) Cilt", color: .indigo)
+                        StatusFlagPill(text: "\(meta.volumeCount) Cilt", color: .teal)
                     }
                 }
             }

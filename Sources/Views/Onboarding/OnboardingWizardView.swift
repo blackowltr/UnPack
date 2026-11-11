@@ -281,7 +281,7 @@ public struct OnboardingWizardView: View {
                     )
 
                     featureRow(
-                        icon: "sparkles",
+                        icon: "trash.slash.fill",
                         iconColor: settings.accentColorChoice.color,
                         title: "Temiz Arşivleme Filtresi",
                         subtitle: "Gizli .DS_Store artıklarını ayıklar; Windows ve Linux sistemleriyle tam uyum sağlar."
@@ -377,10 +377,10 @@ public struct OnboardingWizardView: View {
                     configurationCard(
                         id: "finder_sync",
                         icon: "macwindow.on.rectangle",
-                        color: .indigo,
+                        color: .teal,
                         title: "Finder Sağ Tık Entegrasyonu",
                         badge: "Kısayol",
-                        badgeColor: .indigo,
+                        badgeColor: .teal,
                         description: "Finder bağlam menüsüne 'UnPack ile Sıkıştır' ve 'Buraya Çıkart' seçeneklerini ekler.",
                         isOn: $stepState.isFinderIntegrationSelected
                     )
@@ -400,7 +400,7 @@ public struct OnboardingWizardView: View {
                     // 4. Akıllı Çıkarma & Temizlik
                     configurationCard(
                         id: "clean_filter",
-                        icon: "sparkles",
+                        icon: "trash.slash.fill",
                         color: .mint,
                         title: "Akıllı Çıkarma & Çöp Dosya Temizliği",
                         badge: "Otomasyon",
@@ -565,10 +565,10 @@ public struct OnboardingWizardView: View {
                     // 2. Finder Sağ Tık Menü Uzantısı
                     permissionCard(
                         icon: "macwindow.on.rectangle",
-                        color: .indigo,
+                        color: .teal,
                         title: "Finder Sağ Tık Menü Uzantısı",
                         badge: "Kısayol",
-                        badgeColor: .indigo,
+                        badgeColor: .teal,
                         description: "Finder bağlam menüsünde 'UnPack ile Sıkıştır' ve 'Buraya Çıkart' seçeneklerini doğrudan kullanabilmenizi sağlar.",
                         actionTitle: isFinderExtensionActive ? "Etkinleştirildi" : "Uzantıyı Aç",
                         isGranted: isFinderExtensionActive,
@@ -730,7 +730,6 @@ public struct OnboardingWizardView: View {
                         .foregroundColor(.green)
                         .scaleEffect(checkmarkScale)
                         .opacity(checkmarkOpacity)
-                        .shadow(color: Color.green.opacity(0.35), radius: 10, y: 3)
                 }
                 .padding(.top, 12)
 

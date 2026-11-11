@@ -50,7 +50,7 @@ public struct ArchiveInfoDialog: View {
                 // Güvenlik ve Bütünlük
                 GroupBox("Güvenlik ve Bütünlük") {
                     VStack(spacing: 8) {
-                        infoRow("Şifreleme:", metadata.isEncrypted ? "🔒 Parola Korumalı (AES)" : "Korumasız")
+                        infoRow("Şifreleme:", metadata.isEncrypted ? "Parola Korumalı (AES)" : "Korumasız")
                         infoRow("Çok Parçalı (Split):", metadata.isMultiVolume ? "Evet (Ciltli Arşiv)" : "Hayır (Tek Parça)")
                         infoRow("Kurtarma Kaydı (RR):", metadata.hasRecoveryRecord ? "Mevcut (\(String(format: "%.0f", metadata.recoveryRecordPercentage ?? 3))%)" : "Yok")
                     }

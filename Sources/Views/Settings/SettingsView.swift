@@ -25,15 +25,22 @@ public struct SettingsView: View {
             VStack(spacing: 0) {
                 // Başlık & Logo
                 HStack(spacing: 10) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .fill(settings.accentColorChoice.color.gradient)
+                    if let appIcon = NSApplication.shared.applicationIconImage {
+                        Image(nsImage: appIcon)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
                             .frame(width: 32, height: 32)
-                            .shadow(color: settings.accentColorChoice.color.opacity(0.3), radius: 4, y: 2)
+                            .shadow(color: Color.black.opacity(0.15), radius: 3, y: 1)
+                    } else {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .fill(settings.accentColorChoice.color)
+                                .frame(width: 32, height: 32)
 
-                        Image(systemName: "archivebox.fill")
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(.white)
+                            Image(systemName: "archivebox.fill")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(.white)
+                        }
                     }
 
                     VStack(alignment: .leading, spacing: 1) {
@@ -232,11 +239,11 @@ private enum SettingsTab: String, CaseIterable, Identifiable {
     func dynamicIconColor(accentColor: Color) -> Color {
         switch self {
         case .general: return .blue
-        case .appearance: return .purple
+        case .appearance: return .cyan
         case .compression: return accentColor
         case .extraction: return .green
-        case .finder: return .cyan
-        case .about: return .indigo
+        case .finder: return .orange
+        case .about: return .gray
         }
     }
 
@@ -259,7 +266,7 @@ private struct SidebarTabButton: View {
                 // Renkli Squircle İkon
                 ZStack {
                     RoundedRectangle(cornerRadius: 6, style: .continuous)
-                        .fill(tab.dynamicIconColor(accentColor: accentColor).gradient)
+                        .fill(tab.dynamicIconColor(accentColor: accentColor))
                         .frame(width: 24, height: 24)
 
                     Image(systemName: tab.icon)
@@ -341,7 +348,7 @@ private struct GeneralSettingsPane: View {
                 VStack(spacing: 0) {
                     SettingsRow(
                         icon: "doc.on.doc.fill",
-                        iconColor: .indigo,
+                        iconColor: .blue,
                         title: "Mevcut Dosyaların Üzerine Otomatik Yaz",
                         subtitle: "Çıkartılan dosyalar hedefte zaten varsa sormadan güncel dosyayla değiştirir."
                     ) {
@@ -367,7 +374,7 @@ private struct GeneralSettingsPane: View {
 
                     SettingsRow(
                         icon: "pencil.and.outline",
-                        iconColor: .purple,
+                        iconColor: .teal,
                         title: "Düzenlenen Dosyaları Otomatik Güncelle",
                         subtitle: "Arşiv içinde açılıp harici uygulamalarda kaydedilen dosyaları sormadan doğrudan arşive işler."
                     ) {
@@ -444,7 +451,7 @@ private struct AppearanceSettingsPane: View {
             SettingsCard(title: "Arayüz ve Efektler") {
                 VStack(spacing: 0) {
                     SettingsRow(
-                        icon: "sparkles",
+                        icon: "slider.horizontal.2.square",
                         iconColor: settings.accentColorChoice.color,
                         title: "Akıcı Arayüz Animasyonları",
                         subtitle: "Pencere geçişleri, diyalog açılışları ve buton etkileşim efektleri."
@@ -502,7 +509,7 @@ private struct CompressionSettingsPane: View {
 
                     SettingsRow(
                         icon: "slider.horizontal.3",
-                        iconColor: .indigo,
+                        iconColor: .orange,
                         title: "Varsayılan Sıkıştırma Seviyesi",
                         subtitle: "İşlem hızı ile dosya boyutu arasındaki dengeyi belirler."
                     ) {
@@ -640,7 +647,7 @@ private struct ExtractionSettingsPane: View {
 
                     SettingsRow(
                         icon: "cylinder.split.1x2.fill",
-                        iconColor: .purple,
+                        iconColor: .blue,
                         title: "Varsayılan Alan Açma Modu",
                         subtitle: "Tüm çıkarma işlemlerinde arşivden çıkan dosyaların disk bloklarını anında serbest bırakarak tepe disk kullanımını minimumda tutar."
                     ) {
@@ -694,7 +701,7 @@ private struct FinderSettingsPane: View {
                         FinderMockMenuItem(icon: "arrow.down.doc.fill", title: "UnPack ▶ Buraya Çıkart", iconColor: .blue)
                         FinderMockMenuItem(icon: "folder.badge.plus", title: "UnPack ▶ \"[Arşiv Adı]\" Adıyla Klasöre Çıkart", iconColor: .green)
                         FinderMockMenuItem(icon: "doc.zipper", title: "UnPack ▶ \"[Dosya Adı].zip\" Olarak Sıkıştır", iconColor: settings.accentColorChoice.color)
-                        FinderMockMenuItem(icon: "slider.horizontal.3", title: "UnPack ▶ UnPack ile Sıkıştır... (Gelişmiş)", iconColor: .purple)
+                        FinderMockMenuItem(icon: "slider.horizontal.3", title: "UnPack ▶ UnPack ile Sıkıştır... (Gelişmiş)", iconColor: .orange)
                         FinderMockMenuItem(icon: "macwindow.on.rectangle", title: "UnPack ▶ UnPack ile Aç ve Gözat", iconColor: .cyan)
                     }
                     .padding(12)
@@ -773,21 +780,22 @@ private struct AboutSettingsPane: View {
         VStack(spacing: 18) {
             // Logo ve Başlık
             VStack(spacing: 10) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 22, style: .continuous)
-                        .fill(
-                            LinearGradient(
-                                colors: [Color.blue, Color.purple],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
+                if let appIcon = NSApplication.shared.applicationIconImage {
+                    Image(nsImage: appIcon)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                         .frame(width: 80, height: 80)
-                        .shadow(color: Color.purple.opacity(0.35), radius: 12, y: 5)
+                        .shadow(color: Color.black.opacity(0.18), radius: 8, y: 3)
+                } else {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .fill(Color.accentColor)
+                            .frame(width: 80, height: 80)
 
-                    Image(systemName: "archivebox.fill")
-                        .font(.system(size: 38, weight: .bold))
-                        .foregroundColor(.white)
+                        Image(systemName: "archivebox.fill")
+                            .font(.system(size: 38, weight: .bold))
+                            .foregroundColor(.white)
+                    }
                 }
 
                 VStack(spacing: 4) {
@@ -839,7 +847,7 @@ private struct AboutSettingsPane: View {
 
                     SettingsRow(
                         icon: "link",
-                        iconColor: .purple,
+                        iconColor: .gray,
                         title: "GitHub Deposu",
                         subtitle: "github.com/\(updateChecker.repoSlug)"
                     ) {
@@ -855,7 +863,7 @@ private struct AboutSettingsPane: View {
                     CardRowDivider()
 
                     SettingsRow(
-                        icon: "sparkles",
+                        icon: "doc.text.magnifyingglass",
                         iconColor: .orange,
                         title: "Sürüm Notları & Yenilikler",
                         subtitle: "v\(updateChecker.currentVersion) ile gelen tüm yeni özellik ve optimizasyonlar"
@@ -896,11 +904,11 @@ private struct AboutSettingsPane: View {
             VStack(spacing: 16) {
                 HStack(spacing: 12) {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(Color.orange.gradient)
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(Color.orange)
                             .frame(width: 36, height: 36)
 
-                        Image(systemName: "sparkles")
+                        Image(systemName: "doc.text.magnifyingglass")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(.white)
                     }
@@ -940,73 +948,73 @@ private struct AboutSettingsPane: View {
             return body
         }
         return """
-        ## 🚀 UnPack v1.8.6
+        ## UnPack v1.8.6
 
         Arşiv içerisindeki dosyaları harici uygulamalarda doğrudan düzenleme, canlı dosya izleme ve arşivi anında güncelleme özellikleri eklendi.
 
-        ### ✏️ Canlı Arşiv İçi Dosya Düzenleme (In-Place Edit)
-        - ⚡ **Varsayılan Uygulamayla Aç & Düzenle:** Arşivdeki herhangi bir dosyayı TextEdit, VS Code, Xcode veya sistem varsayılan uygulamanızla doğrudan açıp düzenleyebilirsiniz.
-        - 👁️ **Anlık Değişiklik Algılama:** Düzenlenen dosyanın kaydedilmesi durumunda dosya boyutu, değişiklik tarihi ve SHA-256 hash kontrolleriyle anında tespit edilir.
-        - 🔔 **Akıllı Güncelleme Onay Bandı:** Düzenleme yapıldığında arşiv gezgininde yerel bir onay bandı belirir; tek tıkla arşivi güncelleyebilir veya değişikliği yoksayabilirsiniz.
-        - ⚙️ **Otomatik Güncelleme Tercihi:** Tercihler > Genel sekmesinden düzenlenen dosyaların onay sorulmadan doğrudan arşive işlenmesi seçilebilir.
+        ### Canlı Arşiv İçi Dosya Düzenleme (In-Place Edit)
+        - **Varsayılan Uygulamayla Aç & Düzenle:** Arşivdeki herhangi bir dosyayı TextEdit, VS Code, Xcode veya sistem varsayılan uygulamanızla doğrudan açıp düzenleyebilirsiniz.
+        - **Anlık Değişiklik Algılama:** Düzenlenen dosyanın kaydedilmesi durumunda dosya boyutu, değişiklik tarihi ve SHA-256 hash kontrolleriyle anında tespit edilir.
+        - **Akıllı Güncelleme Onay Bandı:** Düzenleme yapıldığında arşiv gezgininde yerel bir onay bandı belirir; tek tıkla arşivi güncelleyebilir veya değişikliği yoksayabilirsiniz.
+        - **Otomatik Güncelleme Tercihi:** Tercihler > Genel sekmesinden düzenlenen dosyaların onay sorulmadan doğrudan arşive işlenmesi seçilebilir.
 
-        ## 🚀 UnPack v1.8.5
+        ## UnPack v1.8.5
 
-        Yapay zeka arayüz klişelerinden (AI slop) tamamen arındırılmış, macOS Human Interface Guidelines (HIG) standartlarında zarif ve yerel Apple tasarım dili.
+        Yapay zeka arayüz klişelerinden tamamen arındırılmış, macOS Human Interface Guidelines (HIG) standartlarında zarif ve yerel Apple tasarım dili.
 
-        ### 🍎 Özgün macOS Arayüz Tasarımı
-        - 🧼 **Sade ve Doğal Apple Standartları:** Sahne arkası kromatik ışık auraları, sahte sıvı cam parıltıları ve renk cümbüşü kapsüller kaldırıldı; Apple'ın özgün macOS tasarım felsefesi uygulandı.
-        - 🎨 **macOS Resmi 8 Vurgu Rengi:** Sistem Ayarları ile uyumlu resmi Apple renk paleti (Mavi, Mor, Pembe, Kırmızı, Turuncu, Sarı, Yeşil, Grafit) entegre edildi.
-        - 🗂️ **Finder Tarzı Yol Çubuğu & Arama:** Dosya hiyerarşisinde gezinmeyi kolaylaştıran kompakt yol çubuğu ve standart arama alanı oluşturuldu.
-        - ⚡ **Yerel Segmented Kontroller:** Araç çubuğu ve pencere kontrollerinde yerel macOS `.bordered` ve `.segmented` buton stillerine geçildi.
-        - 🎯 **Yalın İlerleme Paneli:** Dönen yörüngeler yerine sistemle uyumlu `ProgressView` ve metrik kartları getirildi.
+        ### Özgün macOS Arayüz Tasarımı
+        - **Sade ve Doğal Apple Standartları:** Sahne arkası kromatik ışık parıltıları ve aşırı renkli dekoratif efektler kaldırıldı; Apple'ın özgün macOS tasarım felsefesi uygulandı.
+        - **macOS Resmi 8 Vurgu Rengi:** Sistem Ayarları ile uyumlu resmi Apple renk paleti (Mavi, Mor, Pembe, Kırmızı, Turuncu, Sarı, Yeşil, Grafit) entegre edildi.
+        - **Finder Tarzı Yol Çubuğu & Arama:** Dosya hiyerarşisinde gezinmeyi kolaylaştıran kompakt yol çubuğu ve standart arama alanı oluşturuldu.
+        - **Yerel Segmented Kontroller:** Araç çubuğu ve pencere kontrollerinde yerel macOS `.bordered` ve `.segmented` buton stillerine geçildi.
+        - **Yalın İlerleme Paneli:** Dönen yörüngeler yerine sistemle uyumlu `ProgressView` ve metrik kartları getirildi.
 
-        ## 🚀 UnPack v1.8.0
+        ## UnPack v1.8.0
 
         Yetersiz disk alanına sahip Mac'lerde büyük arşivlerin açılabilmesini sağlayan "Alan Açarak Çıkarma (Space-Saving In-Place Extraction)" modu eklendi. Çıkarılan dosyaların arşivdeki blokları adım adım serbest bırakılarak minimum boş alanda ayıklama yapılır.
 
-        ### ⚡ Alan Açarak Çıkarma (Düşük Disk Alanı Modu)
-        - 💾 **Minimum Tepe Disk Kullanımı:** Normalde `Arşiv Boyutu + Çıkarılan Dosyalar` kadar boş alan gerekirken; Alan Açma Modu ile yalnızca en büyük tek dosya boyutu kadar alanla 50-100 GB devasa arşivleri bile açabilirsiniz.
-        - 🕳️ **macOS APFS Blok Delme (Sparse Hole Punching):** macOS APFS dosya sistemi üzerinde `F_PUNCHHOLE` çağrısı kullanılarak çıkarılan her dosyanın disk blokları anında deallocate edilir ve işletim sistemine geri kazandırılır.
-        - 🔄 **Ters Kısaltma (Reverse Truncation) & Kuyruk Koruma:** APFS harici disklerde ve ZIP/TAR arşivlerinde dosyalar sondan başa doğru ayıklanır; her adımda `ftruncate` ile arşiv küçültülür.
-        - 🛡️ **Çökme ve Kesinti Korumalı Günlükleme (Journaling):** `.unpack-journal.json` sayesinde işlem elektrik kesintisi veya iptal ile yarıda kalsa bile arşiv bozulmaz; UnPack açıldığında tek tıkla kaldığı yerden devam eder.
-        - 📊 **Akıllı Ön Kontrol (Pre-flight Space Check):** Hedef diskte yeterli alan olup olmadığı çıkarma öncesinde simüle edilir; alan kritikse kullanıcıya otomatik Alan Açma Modu önerilir.
-        - 📦 **Çok Parçalı Arşiv (Multi-part) Otomatik Tasarrufu:** `.part1.rar` veya `.7z.001` gibi çok ciltli arşivlerde tamamlanan ciltler anında temizlenerek disk alanı serbest bırakılır.
+        ### Alan Açarak Çıkarma (Düşük Disk Alanı Modu)
+        - **Minimum Tepe Disk Kullanımı:** Normalde `Arşiv Boyutu + Çıkarılan Dosyalar` kadar boş alan gerekirken; Alan Açma Modu ile yalnızca en büyük tek dosya boyutu kadar alanla 50-100 GB devasa arşivleri bile açabilirsiniz.
+        - **macOS APFS Blok Delme (Sparse Hole Punching):** macOS APFS dosya sistemi üzerinde `F_PUNCHHOLE` çağrısı kullanılarak çıkarılan her dosyanın disk blokları anında deallocate edilir ve işletim sistemine geri kazandırılır.
+        - **Ters Kısaltma (Reverse Truncation) & Kuyruk Koruma:** APFS harici disklerde ve ZIP/TAR arşivlerinde dosyalar sondan başa doğru ayıklanır; her adımda `ftruncate` ile arşiv küçültülür.
+        - **Çökme ve Kesinti Korumalı Günlükleme (Journaling):** `.unpack-journal.json` sayesinde işlem elektrik kesintisi veya iptal ile yarıda kalsa bile arşiv bozulmaz; UnPack açıldığında tek tıkla kaldığı yerden devam eder.
+        - **Akıllı Ön Kontrol (Pre-flight Space Check):** Hedef diskte yeterli alan olup olmadığı çıkarma öncesinde simüle edilir; alan kritikse kullanıcıya otomatik Alan Açma Modu önerilir.
+        - **Çok Parçalı Arşiv (Multi-part) Otomatik Tasarrufu:** `.part1.rar` veya `.7z.001` gibi çok ciltli arşivlerde tamamlanan ciltler anında temizlenerek disk alanı serbest bırakılır.
 
-        ## 🚀 UnPack v1.7.2
+        ## UnPack v1.7.2
 
         RAM ve CPU tüketimini en aza indirgeyen, arka plan işlemlerini ve dosya önbelleğini optimize eden yüksek verimlilik güncellemesi.
 
-        ### 🌿 Düşük RAM ve CPU Tüketimi Optimizasyonları
-        - 🧠 **Otomatik Temizlenen Simge Önbelleği:** Dosya simgeleri artık `NSCache` altyapısıyla yönetilmekte; sistem bellek baskısı hissettiğinde otomatik tahliye edilerek RAM şişmesi engellenmektedir.
-        - 🔋 **Düşük CPU ve Güç Tüketimi:** Arşivleme ve çıkarma sırasındaki boru hattı okuma döngüleri optimize edildi. Gereksiz uyandırmalar azaltılarak CPU çekirdeklerinin düşük güç durumunda kalması sağlandı.
-        - ⚡ **Sıfır Gecikmeli Liste Filtreleme:** Arama ve klasör içi dosya listelemeleri önbelleğe alınarak her kullanıcı etkileşiminde tekrarlanan CPU filtreleme yükü ortadan kaldırıldı.
-        - 🧹 **Otomatik Geçici Alan Temizliği:** Hızlı bakış ve sürükle-bırak için açılan geçici dosyalar periyodik olarak temizlenerek disk ve bellek sağlığı güvenceye alındı.
-        - ⏱️ **Zamanlayıcı Birleştirme (Timer Coalescing):** Arka plan güncelleme denetimleri macOS enerji tasarrufu standartlarına uygun şekilde optimize edildi.
+        ### Düşük RAM ve CPU Tüketimi Optimizasyonları
+        - **Otomatik Temizlenen Simge Önbelleği:** Dosya simgeleri artık `NSCache` altyapısıyla yönetilmekte; sistem bellek baskısı hissettiğinde otomatik tahliye edilerek RAM şişmesi engellenmektedir.
+        - **Düşük CPU ve Güç Tüketimi:** Arşivleme ve çıkarma sırasındaki boru hattı okuma döngüleri optimize edildi. Gereksiz uyandırmalar azaltılarak CPU çekirdeklerinin düşük güç durumunda kalması sağlandı.
+        - **Sıfır Gecikmeli Liste Filtreleme:** Arama ve klasör içi dosya listelemeleri önbelleğe alınarak her kullanıcı etkileşiminde tekrarlanan CPU filtreleme yükü ortadan kaldırıldı.
+        - **Otomatik Geçici Alan Temizliği:** Hızlı bakış ve sürükle-bırak için açılan geçici dosyalar periyodik olarak temizlenerek disk ve bellek sağlığı güvenceye alındı.
+        - **Zamanlayıcı Birleştirme (Timer Coalescing):** Arka plan güncelleme denetimleri macOS enerji tasarrufu standartlarına uygun şekilde optimize edildi.
 
-        ## 🚀 UnPack v1.7.1
+        ## UnPack v1.7.1
 
         Performans, verimlilik ve dosya ilişkilendirme süreçlerini optimize eden bu güncelleme; macOS sistem uyumluluğunu en üst düzeye taşır.
 
-        ### ⚡ Performans ve Verimlilik İyileştirmeleri
-        - 📂 **Toplu Dosya Eşitleme:** İlk kurulumda ve açılışta arşiv formatları artık tek tek sormak yerine tek bir onayla arka planda topluca UnPack ile eşleştirilir.
-        - 🏎️ **Motor Önbellekleme:** Arşiv motoru ikili yol aramaları ve dosya kontrol çağrıları optimize edilerek her işlemdeki disk I/O yükü azaltıldı.
-        - 📊 **Akıcı İlerleme Eğrisi:** Sıkıştırma ve arşivleme ekranındaki yüzde hesaplamaları yumuşatılarak %95 seviyesinde yaşanan yapay duraklamalar giderildi.
-        - 🧹 **Arka Plan Önbellek Tazeleme:** Finder simge önbelleği ve QuickLook yenileme işlemleri ana iş parçacığını bloke etmeden asenkron çalışacak şekilde uyarlandı.
+        ### Performans ve Verimlilik İyileştirmeleri
+        - **Toplu Dosya Eşitleme:** İlk kurulumda ve açılışta arşiv formatları artık tek tek sormak yerine tek bir onayla arka planda topluca UnPack ile eşleştirilir.
+        - **Motor Önbellekleme:** Arşiv motoru ikili yol aramaları ve dosya kontrol çağrıları optimize edilerek her işlemdeki disk I/O yükü azaltıldı.
+        - **Akıcı İlerleme Eğrisi:** Sıkıştırma ve arşivleme ekranındaki yüzde hesaplamaları yumuşatılarak %95 seviyesinde yaşanan yapay duraklamalar giderildi.
+        - **Arka Plan Önbellek Tazeleme:** Finder simge önbelleği ve QuickLook yenileme işlemleri ana iş parçacığını bloke etmeden asenkron çalışacak şekilde uyarlandı.
 
-        ## 🚀 UnPack v1.7.0
+        ## UnPack v1.7.0
 
         UnPack; sadeleştirilmiş yeni kimliği, modern Apple standartlarında arşiv oluşturma arayüzü, sessiz arka plan güncelleme sistemi ve doğrudan Finder sağ tık entegrasyonuyla güncellendi.
 
-        ### ✨ Tasarım ve Kullanıcı Deneyimi Yenilikleri
+        ### Tasarım ve Kullanıcı Deneyimi Yenilikleri
 
-        - 💎 **Yüzen Cam Kapsül Araç Çubuğu:** Klasik buton kalabalığı kaldırıldı; birincil çıkarma ve ekleme eylemleri, hızlı önizleme araçları ve gelişmiş özellikler modern Apple kapsülleri halinde toplandı.
-        - 🖼️ **Finder Tarzı Izgara (Grid) Görünümü:** Arşiv içeriğini ayrıntılı tablonun yanı sıra büyük önizleme kartları halinde görüntüleme seçeneği eklendi. Araç çubuğundan tek tıkla Liste ve Izgara arasında geçiş yapabilirsiniz.
-        - 🧭 **Apple Yol ve Spotlight Arama Çubuğu:** Klasör hiyerarşisinde rahatça gezinmeyi sağlayan tıklanabilir yol kapsülleri ve Spotlight arama kutusu baştan tasarlandı.
-        - 🎨 **Zarif Boş Durumlar:** Henüz arşiv açılmadığında veya boş klasörlere girildiğinde kullanıcıyı karşılayan estetik Apple simge ve yönlendirmeleri eklendi.
-        - ⌨️ **Klavye Kısayol Rozetleri:** Alt çubuğa Space ile hızlı bakış ve ⌘E ile çıkarma kısayollarını hatırlatan Apple tuş rozetleri yerleştirildi.
+        - **Sadeleştirilmiş Araç Çubuğu:** Klasik buton kalabalığı kaldırıldı; birincil çıkarma ve ekleme eylemleri, hızlı önizleme araçları ve gelişmiş özellikler düzenli bir araç çubuğunda toplandı.
+        - **Finder Tarzı Izgara (Grid) Görünümü:** Arşiv içeriğini ayrıntılı tablonun yanı sıra büyük önizleme kartları halinde görüntüleme seçeneği eklendi. Araç çubuğundan tek tıkla Liste ve Izgara arasında geçiş yapabilirsiniz.
+        - **Apple Yol ve Spotlight Arama Çubuğu:** Klasör hiyerarşisinde rahatça gezinmeyi sağlayan tıklanabilir yol çubuğu ve Spotlight arama kutusu baştan tasarlandı.
+        - **Zarif Boş Durumlar:** Henüz arşiv açılmadığında veya boş klasörlere girildiğinde kullanıcıyı karşılayan net Apple simge ve yönlendirmeleri eklendi.
+        - **Klavye Kısayol Rozetleri:** Alt çubuğa Space ile hızlı bakış ve ⌘E ile çıkarma kısayollarını hatırlatan tuş rozetleri yerleştirildi.
 
-        ### 📦 Sistem Uyumluluğu
+        ### Sistem Uyumluluğu
         - **Evrensel Destek:** Apple Silicon (M1, M2, M3, M4) ve Intel (x86_64) işlemcili Mac bilgisayarlarla tam uyumludur.
         - **İşletim Sistemi:** macOS Sonoma (14.0) ve macOS Sequoia (15.0) sürümlerini destekler.
         """
@@ -1073,7 +1081,7 @@ private struct SettingsRow<Control: View>: View {
             // Renkli Squircle İkon
             ZStack {
                 RoundedRectangle(cornerRadius: 6, style: .continuous)
-                    .fill(iconColor.gradient)
+                    .fill(iconColor)
                     .frame(width: 26, height: 26)
 
                 Image(systemName: icon)

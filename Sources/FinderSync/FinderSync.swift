@@ -114,7 +114,7 @@ public class FinderSync: FIFinderSync {
                 keyEquivalent: ""
             )
             cleanItem.target = self
-            cleanItem.image = NSImage(systemSymbolName: "sparkles", accessibilityDescription: nil)
+            cleanItem.image = NSImage(systemSymbolName: "trash.slash", accessibilityDescription: nil)
             subMenu.addItem(cleanItem)
 
         } else {
@@ -171,7 +171,7 @@ public class FinderSync: FIFinderSync {
                 keyEquivalent: ""
             )
             cleanItem.target = self
-            cleanItem.image = NSImage(systemSymbolName: "sparkles", accessibilityDescription: nil)
+            cleanItem.image = NSImage(systemSymbolName: "trash.slash", accessibilityDescription: nil)
             subMenu.addItem(cleanItem)
         }
 

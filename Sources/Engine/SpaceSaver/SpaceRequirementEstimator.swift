@@ -42,11 +42,11 @@ public struct SpaceRequirementReport: Sendable, Equatable {
 
     public var statusBadgeText: String {
         if !canExtractStandard && canExtractSpaceSaver {
-            return "⚡ Alan Açma Modu Gerekli (Düşük Disk Alanı)"
+            return "Alan Açma Modu Gerekli (Düşük Disk Alanı)"
         } else if isLowDiskSpace {
-            return "⚠️ Disk Alanı Kritik (Alan Açma Önerilir)"
+            return "Disk Alanı Kritik (Alan Açma Önerilir)"
         } else {
-            return "✓ Disk Alanı Yeterli"
+            return "Disk Alanı Yeterli"
         }
     }
 

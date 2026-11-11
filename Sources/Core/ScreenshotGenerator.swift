@@ -55,7 +55,7 @@ public final class ScreenshotGenerator {
                 return
             }
         }
-        print("❌ HATA: Görsel üretilemedi: \(targetPath)")
+        print("HATA: Görsel üretilemedi: \(targetPath)")
     }
 }
 
@@ -284,9 +284,9 @@ private struct ExplorerScreenshotView: View {
                                 .padding(.top, 8)
 
                             sidebarRow(icon: "tray.full.fill", title: "Tüm Dosyalar", count: "8", color: .blue, isSelected: true)
-                            sidebarRow(icon: "photo.fill", title: "Görseller", count: "2", color: .purple, isSelected: false)
+                            sidebarRow(icon: "photo.fill", title: "Görseller", count: "2", color: .blue, isSelected: false)
                             sidebarRow(icon: "doc.text.fill", title: "Belgeler", count: "3", color: .orange, isSelected: false)
-                            sidebarRow(icon: "chevron.left.forwardslash.chevron.right", title: "Kod & Veri", count: "3", color: .cyan, isSelected: false)
+                            sidebarRow(icon: "chevron.left.forwardslash.chevron.right", title: "Kod & Veri", count: "3", color: .teal, isSelected: false)
                         }
 
                         // Klasörler
@@ -340,7 +340,7 @@ private struct ExplorerScreenshotView: View {
                             fileRow(icon: "folder.fill", iconColor: .blue, name: "Görseller", type: "Klasör", size: "8,4 MB", packed: "6,2 MB", date: "Dün 18:15", crc: "—", isSelected: false)
                             fileRow(icon: "folder.fill", iconColor: .blue, name: "Kaynak_Kodlar", type: "Klasör", size: "240 KB", packed: "58 KB", date: "25 Eki 19:40", crc: "—", isSelected: false)
                             fileRow(icon: "doc.richtext.fill", iconColor: .red, name: "Proje_Raporu_2026.pdf", type: "PDF Belgesi", size: "2,4 MB", packed: "1,6 MB", date: "24 Eki 11:30", crc: "A4F89B12", isSelected: true)
-                            fileRow(icon: "photo.fill", iconColor: .purple, name: "Logo_Retina_4K.png", type: "PNG Görseli", size: "5,1 MB", packed: "3,8 MB", date: "22 Eki 16:45", crc: "7E8F9A0B", isSelected: false)
+                            fileRow(icon: "photo.fill", iconColor: .blue, name: "Logo_Retina_4K.png", type: "PNG Görseli", size: "5,1 MB", packed: "3,8 MB", date: "22 Eki 16:45", crc: "7E8F9A0B", isSelected: false)
                             fileRow(icon: "gearshape.fill", iconColor: .orange, name: "Configuration.json", type: "JSON Verisi", size: "18 KB", packed: "4 KB", date: "25 Eki 12:10", crc: "B3C5D7E9", isSelected: false)
                             fileRow(icon: "doc.text.fill", iconColor: .gray, name: "README.md", type: "Markdown", size: "12 KB", packed: "3 KB", date: "25 Eki 17:50", crc: "F1E2D3C4", isSelected: false)
                             fileRow(icon: "externaldrive.fill", iconColor: .teal, name: "Veritabani_Yedek.sql", type: "SQL Veritabanı", size: "14,2 MB", packed: "3,2 MB", date: "20 Eki 09:15", crc: "5E6F7A8B", isSelected: false)
@@ -535,7 +535,7 @@ private struct SettingsScreenshotView: View {
                     HStack(spacing: 10) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                .fill(Color.accentColor.gradient)
+                                .fill(Color.accentColor)
                                 .frame(width: 32, height: 32)
                             Image(systemName: "archivebox.fill")
                                 .font(.system(size: 16, weight: .bold))
@@ -591,7 +591,7 @@ private struct SettingsScreenshotView: View {
                         VStack(spacing: 0) {
                             settingToggleRow(icon: "trash.fill", color: .red, title: "Çıkardıktan sonra arşivi Çöp Sepeti'ne taşı", subtitle: "Başarılı çıkarma sonrası kaynak arşivi güvenle çöpe taşır", isOn: false)
                             Divider().padding(.leading, 42)
-                            settingToggleRow(icon: "speaker.wave.2.fill", color: .purple, title: "İşlem tamamlandığında ses çal", subtitle: "Arşivleme ve çıkarma bittiğinde bildirim tonu çalar", isOn: true)
+                            settingToggleRow(icon: "speaker.wave.2.fill", color: .blue, title: "İşlem tamamlandığında ses çal", subtitle: "Arşivleme ve çıkarma bittiğinde bildirim tonu çalar", isOn: true)
                             Divider().padding(.leading, 42)
                             settingToggleRow(icon: "macwindow", color: .blue, title: "Tamamlanan dosyaları Finder'da göster", subtitle: "Çıkartılan klasörü doğrudan Finder penceresinde odaklar", isOn: true)
                         }
@@ -606,7 +606,7 @@ private struct SettingsScreenshotView: View {
                             .foregroundColor(.secondary)
 
                         VStack(spacing: 0) {
-                            settingToggleRow(icon: "sparkles", color: .mint, title: "Gereksiz sistem dosyalarını otomatik filtrele", subtitle: ".DS_Store, __MACOSX ve geçici Apple dosyalarını temizler", isOn: true)
+                            settingToggleRow(icon: "trash.slash.fill", color: .mint, title: "Gereksiz sistem dosyalarını otomatik filtrele", subtitle: ".DS_Store, __MACOSX ve geçici Apple dosyalarını temizler", isOn: true)
                             Divider().padding(.leading, 42)
                             settingToggleRow(icon: "doc.badge.gearshape.fill", color: .teal, title: "AppleDouble (._*) meta verilerini ayıkla", subtitle: "Windows ve Linux kullanıcıları için temiz arşivler oluşturur", isOn: true)
                         }
@@ -716,14 +716,13 @@ private struct UpdaterScreenshotView: View {
                 // Üst Başlık & Simge
                 HStack(spacing: 14) {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .fill(LinearGradient(colors: [Color.blue, Color.indigo], startPoint: .topLeading, endPoint: .bottomTrailing))
-                            .frame(width: 52, height: 52)
-                            .shadow(color: Color.blue.opacity(0.35), radius: 8, y: 3)
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(Color.accentColor.opacity(0.14))
+                            .frame(width: 48, height: 48)
 
                         Image(systemName: "arrow.down.circle.fill")
-                            .font(.system(size: 26, weight: .semibold))
-                            .foregroundColor(.white)
+                            .font(.system(size: 22, weight: .semibold))
+                            .foregroundColor(Color.accentColor)
                     }
 
                     VStack(alignment: .leading, spacing: 3) {
@@ -731,7 +730,7 @@ private struct UpdaterScreenshotView: View {
                             .font(.system(size: 16, weight: .bold))
                             .foregroundColor(.primary)
 
-                        Text("Mevcut: v1.8.0 • Hedef: v1.8.6 (Önerilen Güncelleme)")
+                        Text("Mevcut: v1.8.5 • Hedef: v1.8.6 (Önerilen Güncelleme)")
                             .font(.system(size: 11.5))
                             .foregroundColor(.secondary)
                     }
@@ -752,17 +751,17 @@ private struct UpdaterScreenshotView: View {
 
                         Spacer()
 
-                        Text("15,8 MB • DMG")
+                        Text("DMG Paketi")
                             .font(.system(size: 11, weight: .semibold))
                             .foregroundColor(.secondary)
                     }
 
                     VStack(alignment: .leading, spacing: 8) {
-                        noteRow(icon: "sparkles", text: "macOS Finder sağ tık menüsünde doğrudan 'UnPack ile...' eylemleri")
-                        noteRow(icon: "bolt.fill", text: "Apple Silicon M-serisi Mac'ler için %40 daha hızlı arşivleme")
-                        noteRow(icon: "square.split.2x1.fill", text: "Çok parçalı (.part1 / .001) arşivleri tek tıkla otomatik birleştirme")
-                        noteRow(icon: "shield.checkered", text: "Gelişmiş Zip Slip koruması ve şifrelenmiş başlık denetimi")
-                        noteRow(icon: "macwindow.badge.plus", text: "Apple Liquid Glass dosya simgeleri ve modern arayüz tasarımı")
+                        noteRow(icon: "pencil.and.outline", text: "Canlı arşiv içi dosya düzenleme ve tek tıkla güncelleme onayı")
+                        noteRow(icon: "externaldrive.badge.checkmark", text: "APFS Space-Saver ile minimum boş disk alanında dev arşiv açma")
+                        noteRow(icon: "macwindow.badge.plus", text: "macOS Finder sağ tık menüsünde doğrudan 'UnPack' eylemleri")
+                        noteRow(icon: "shield.checkered", text: "Zip Slip, Zip Bomb ve sahte uzantı taramasıyla proaktif koruma")
+                        noteRow(icon: "cpu", text: "Apple Silicon M1–M4 ve Intel Mac’ler için Universal ikili mimari")
                     }
                     .padding(14)
                     .background(Color(NSColor.controlBackgroundColor).opacity(0.6))
@@ -788,7 +787,7 @@ private struct UpdaterScreenshotView: View {
                             .frame(height: 6)
 
                         Capsule()
-                            .fill(LinearGradient(colors: [Color.blue, Color.cyan], startPoint: .leading, endPoint: .trailing))
+                            .fill(Color.accentColor)
                             .frame(width: 370, height: 6)
                     }
                 }
@@ -944,14 +943,14 @@ private struct QuickDropScreenshotView: View {
                                 .foregroundColor(.secondary)
                         }
 
-                        // Desteklenen Biçim Kapsülleri
+                        // Desteklenen Biçim Rozetleri
                         HStack(spacing: 8) {
-                            formatPill("RAR", color: .purple)
-                            formatPill("ZIP", color: .blue)
-                            formatPill("7Z", color: .orange)
-                            formatPill("TAR", color: .teal)
-                            formatPill("GZ", color: .green)
-                            formatPill("XZ", color: .indigo)
+                            formatPill("RAR")
+                            formatPill("ZIP")
+                            formatPill("7Z")
+                            formatPill("TAR")
+                            formatPill("GZ")
+                            formatPill("XZ")
                         }
 
                         // Hızlı Seçim Butonları
@@ -1038,13 +1037,13 @@ private struct QuickDropScreenshotView: View {
         .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.white.opacity(0.1), lineWidth: 0.5))
     }
 
-    private func formatPill(_ format: String, color: Color) -> some View {
+    private func formatPill(_ format: String) -> some View {
         Text(format)
-            .font(.system(size: 10, weight: .bold))
-            .padding(.horizontal, 9)
+            .font(.system(size: 10, weight: .semibold, design: .monospaced))
+            .padding(.horizontal, 8)
             .padding(.vertical, 3)
-            .background(color.opacity(0.18))
-            .foregroundColor(color)
-            .clipShape(Capsule())
+            .background(Color(NSColor.quaternaryLabelColor))
+            .foregroundColor(.secondary)
+            .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
     }
 }

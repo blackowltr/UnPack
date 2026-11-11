@@ -394,7 +394,7 @@ public struct ArchiveSidebarView: View {
 
     private func categoryColor(_ cat: ArchiveCategoryFilter) -> Color {
         switch cat {
-        case .images: return .purple
+        case .images: return .blue
         case .documents: return .orange
         case .media: return .pink
         case .code: return .teal

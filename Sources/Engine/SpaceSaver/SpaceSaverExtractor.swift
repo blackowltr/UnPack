@@ -93,7 +93,7 @@ public final class SpaceSaverExtractor: Sendable {
                     let startTime = Date()
                     var processedLogs: [String] = []
                     if !completedSet.isEmpty {
-                        processedLogs.append("⚡ [Devam Edildi] Önceden çıkarılan \(completedSet.count) dosya atlandı.")
+                        processedLogs.append("[Devam Edildi] Önceden çıkarılan \(completedSet.count) dosya atlandı.")
                     }
 
                     let isAPFS = APFSPunchHole.isAPFS(at: archiveURL)
@@ -186,7 +186,7 @@ public final class SpaceSaverExtractor: Sendable {
                                 processedBytes += item.uncompressedSize
 
                                 let freedFormatted = ByteCountFormatter.string(fromByteCount: freedBytes, countStyle: .file)
-                                let logMsg = "⚡ [Alan Açıldı] \(item.name) (Toplam +\(freedFormatted) serbest)"
+                                let logMsg = "[Alan Açıldı] \(item.name) (Toplam +\(freedFormatted) serbest)"
                                 processedLogs.append(logMsg)
                                 if processedLogs.count > 100 {
                                     processedLogs.removeFirst()
@@ -243,7 +243,7 @@ public final class SpaceSaverExtractor: Sendable {
                             speedBytesPerSecond: 0,
                             estimatedRemainingTime: 0,
                             elapsedTime: Date().timeIntervalSince(startTime),
-                            processedLog: processedLogs + ["✓ Çıkarma tamamlandı. Arşiv alanı sisteme geri kazandırıldı."],
+                            processedLog: processedLogs + ["Çıkarma tamamlandı. Arşiv alanı sisteme geri kazandırıldı."],
                             freedBytes: freedBytes
                         )
                     )

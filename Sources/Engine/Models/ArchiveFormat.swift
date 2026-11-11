@@ -89,64 +89,64 @@ public enum ArchiveFormat: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
-    /// Apple Liquid Glass birincil rengi
+    /// Format birincil sistem rengi
     public var liquidPrimaryColor: Color {
         switch self {
         case .rar:
-            return Color(red: 0.52, green: 0.16, blue: 0.90) // Royal Amethyst
+            return Color(red: 0.24, green: 0.38, blue: 0.68) // Cobalt Slate
         case .zip:
-            return Color(red: 0.04, green: 0.46, blue: 0.98) // Electric Azure
+            return Color(red: 0.04, green: 0.46, blue: 0.90) // System Blue
         case .sevenZip:
-            return Color(red: 0.04, green: 0.68, blue: 0.44) // Apple Emerald
+            return Color(red: 0.04, green: 0.62, blue: 0.42) // Forest Emerald
         case .tar, .tarGz:
-            return Color(red: 0.35, green: 0.42, blue: 0.58) // Cobalt Slate
+            return Color(red: 0.35, green: 0.42, blue: 0.56) // Steel Slate
         case .tarBz2:
-            return Color(red: 0.45, green: 0.35, blue: 0.65) // Deep Slate
+            return Color(red: 0.42, green: 0.44, blue: 0.54) // Iron Slate
         case .tarXz:
-            return Color(red: 0.28, green: 0.38, blue: 0.92) // Deep Indigo
+            return Color(red: 0.18, green: 0.36, blue: 0.72) // Deep Cobalt
         case .zstd:
-            return Color(red: 0.10, green: 0.72, blue: 0.88) // Cyan Neon
+            return Color(red: 0.08, green: 0.56, blue: 0.72) // Ocean Teal
         case .iso, .dmg:
-            return Color(red: 0.32, green: 0.52, blue: 0.88) // Mac Disk Blue
+            return Color(red: 0.28, green: 0.48, blue: 0.80) // Mac Disk Blue
         case .cab:
-            return Color(red: 0.48, green: 0.50, blue: 0.58) // Titanium Slate
+            return Color(red: 0.46, green: 0.49, blue: 0.56) // Graphite
         }
     }
 
-    /// Apple Liquid Glass ikincil / parıltı rengi
+    /// Format ikincil ton rengi
     public var liquidSecondaryColor: Color {
         switch self {
         case .rar:
-            return Color(red: 0.82, green: 0.32, blue: 1.0) // Neon Orchid
+            return Color(red: 0.42, green: 0.56, blue: 0.82)
         case .zip:
-            return Color(red: 0.25, green: 0.75, blue: 1.0) // Sky Blue
+            return Color(red: 0.25, green: 0.68, blue: 0.95)
         case .sevenZip:
-            return Color(red: 0.25, green: 0.88, blue: 0.62) // Luminous Mint
+            return Color(red: 0.25, green: 0.80, blue: 0.58)
         case .tar, .tarGz:
-            return Color(red: 0.58, green: 0.68, blue: 0.88) // Soft Cobalt
+            return Color(red: 0.54, green: 0.62, blue: 0.78)
         case .tarBz2:
-            return Color(red: 0.68, green: 0.58, blue: 0.88)
+            return Color(red: 0.60, green: 0.62, blue: 0.72)
         case .tarXz:
-            return Color(red: 0.55, green: 0.60, blue: 1.0)
+            return Color(red: 0.40, green: 0.56, blue: 0.86)
         case .zstd:
-            return Color(red: 0.40, green: 0.90, blue: 1.0)
+            return Color(red: 0.32, green: 0.74, blue: 0.86)
         case .iso, .dmg:
-            return Color(red: 0.55, green: 0.75, blue: 1.0)
+            return Color(red: 0.50, green: 0.68, blue: 0.92)
         case .cab:
-            return Color(red: 0.70, green: 0.72, blue: 0.80)
+            return Color(red: 0.66, green: 0.69, blue: 0.76)
         }
     }
 
-    /// Liquid Glass gradyanı
+    /// Format renk geçişi
     public var liquidGradient: LinearGradient {
         LinearGradient(
-            colors: [liquidSecondaryColor, liquidPrimaryColor],
+            colors: [liquidPrimaryColor, liquidPrimaryColor.opacity(0.88)],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
     }
 
-    /// Liquid Glass SF Sembolü
+    /// Format SF Sembolü
     public var liquidSymbol: String {
         switch self {
         case .rar: return "books.vertical.fill"

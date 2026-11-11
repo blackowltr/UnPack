@@ -193,7 +193,7 @@ public struct ArchiveBrowserView: View {
                 HStack(spacing: 8) {
                     Image(systemName: mp.isComplete ? "square.split.2x1.fill" : "exclamationmark.triangle.fill")
                         .symbolRenderingMode(.hierarchical)
-                        .foregroundColor(mp.isComplete ? .indigo : .red)
+                        .foregroundColor(mp.isComplete ? .blue : .red)
                         .font(.system(size: 12))
 
                     Text(mp.summaryDescription)
@@ -214,7 +214,7 @@ public struct ArchiveBrowserView: View {
                 .padding(.vertical, 5)
                 .background(
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .fill(mp.isComplete ? Color.indigo.opacity(0.10) : Color.red.opacity(0.12))
+                        .fill(mp.isComplete ? Color.blue.opacity(0.10) : Color.red.opacity(0.12))
                 )
                 .padding(.horizontal, 10)
                 .padding(.top, 4)
@@ -223,7 +223,7 @@ public struct ArchiveBrowserView: View {
             // macOS Artıkları Tespit Uyarısı & Hızlı Temizlik Bandı
             if junkItemsCount > 0 {
                 HStack(spacing: 8) {
-                    Image(systemName: "sparkles")
+                    Image(systemName: "trash.slash.fill")
                         .symbolRenderingMode(.hierarchical)
                         .foregroundColor(.mint)
                         .font(.system(size: 13, weight: .semibold))

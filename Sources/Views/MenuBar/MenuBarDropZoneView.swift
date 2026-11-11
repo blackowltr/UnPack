@@ -6,7 +6,7 @@ private final class MenuBarDropZoneState: ObservableObject {
     @Published var isHovering: Bool = false
 }
 
-/// macOS Menü Çubuğu için Liquid Glass / Akrilik Mini Drop-Zone Widget'ı
+/// macOS Menü Çubuğu için Mini Hızlı Bırakma (Drop-Zone) Aracı
 @MainActor
 public struct MenuBarDropZoneView: View {
     @ObservedObject private var settings = AppSettings.shared
@@ -50,7 +50,7 @@ public struct MenuBarDropZoneView: View {
                 .help("Ana Pencereyi Aç")
             }
 
-            // Liquid Glass Mini Drop Zone
+            // Mini Sürükle-Bırak Alanı
             ZStack {
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
                     .strokeBorder(

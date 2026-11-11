@@ -44,13 +44,14 @@ public struct ReleaseNotesMarkdownView: View {
             // Bölüm Başlığı
             if let title = section.title {
                 HStack(spacing: 8) {
-                    if let icon = section.icon {
-                        Text(icon)
-                            .font(.system(size: 15))
+                    if !section.isPrimaryHeader {
+                        Image(systemName: sectionSymbol(for: title))
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(accentColor)
                     }
 
                     Text(title)
-                        .font(.system(size: 13, weight: .bold))
+                        .font(.system(size: section.isPrimaryHeader ? 14 : 13, weight: .bold))
                         .foregroundColor(section.isPrimaryHeader ? .primary : accentColor)
 
                     Spacer()
@@ -87,20 +88,15 @@ public struct ReleaseNotesMarkdownView: View {
     @ViewBuilder
     private func renderItemCard(_ item: ReleaseFeatureItem) -> some View {
         HStack(alignment: .top, spacing: 11) {
-            // Sol İkon / Emoji Rozeti
+            // Sol İkon Rozeti
             ZStack {
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [accentColor.opacity(0.16), accentColor.opacity(0.08)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 30, height: 30)
+                    .fill(accentColor.opacity(0.10))
+                    .frame(width: 28, height: 28)
 
-                Text(item.icon ?? "✨")
-                    .font(.system(size: 14))
+                Image(systemName: itemSymbol(for: item.title))
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(accentColor)
             }
             .padding(.top, 1)
 
@@ -144,6 +140,42 @@ public struct ReleaseNotesMarkdownView: View {
             return attr
         }
         return AttributedString(text)
+    }
+
+    private func sectionSymbol(for title: String) -> String {
+        let lower = title.lowercased()
+        if lower.contains("düzenle") || lower.contains("edit") {
+            return "pencil.and.outline"
+        } else if lower.contains("alan") || lower.contains("disk") || lower.contains("space") {
+            return "externaldrive.badge.checkmark"
+        } else if lower.contains("ram") || lower.contains("cpu") || lower.contains("performans") || lower.contains("verim") {
+            return "cpu"
+        } else if lower.contains("tasarım") || lower.contains("arayüz") || lower.contains("özgün") {
+            return "macwindow"
+        } else if lower.contains("uyum") || lower.contains("sistem") {
+            return "checkmark.shield"
+        }
+        return "doc.text"
+    }
+
+    private func itemSymbol(for title: String) -> String {
+        let lower = title.lowercased()
+        if lower.contains("düzenle") || lower.contains("güncelleme") || lower.contains("algılama") {
+            return "pencil.and.outline"
+        } else if lower.contains("disk") || lower.contains("apfs") || lower.contains("ters kısaltma") || lower.contains("alan") {
+            return "externaldrive.badge.checkmark"
+        } else if lower.contains("günlük") || lower.contains("güven") || lower.contains("koruma") || lower.contains("gizlilik") {
+            return "shield.lefthalf.filled"
+        } else if lower.contains("ram") || lower.contains("cpu") || lower.contains("güç") || lower.contains("önbellek") || lower.contains("motor") {
+            return "memorychip"
+        } else if lower.contains("cilt") || lower.contains("parça") || lower.contains("arşiv") || lower.contains("format") {
+            return "doc.zipper"
+        } else if lower.contains("araç") || lower.contains("ızgara") || lower.contains("yol") || lower.contains("kısayol") || lower.contains("renk") {
+            return "macwindow"
+        } else if lower.contains("temiz") {
+            return "trash.slash"
+        }
+        return "checkmark.circle"
     }
 }
 

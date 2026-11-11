@@ -371,7 +371,7 @@ public struct CompressDialog: View {
                     HStack(spacing: 5) {
                         Image(systemName: "cube.fill")
                             .font(.system(size: 11))
-                            .foregroundColor(supportsSolid ? .purple : .secondary)
+                            .foregroundColor(supportsSolid ? settings.accentColorChoice.color : .secondary)
                         Text("Katı Arşiv (Daha Yüksek Sıkıştırma)")
                             .font(.system(size: 11.5))
                     }
@@ -398,7 +398,7 @@ public struct CompressDialog: View {
             VStack(alignment: .leading, spacing: 9) {
                 Toggle(isOn: $stripMacJunk) {
                     HStack(spacing: 5) {
-                        Image(systemName: "sparkles")
+                        Image(systemName: "trash.slash")
                             .font(.system(size: 11))
                             .foregroundColor(.mint)
                         Text("macOS Artıklarını Temizle (.DS_Store)")
@@ -422,7 +422,7 @@ public struct CompressDialog: View {
                     HStack(spacing: 5) {
                         Image(systemName: "square.split.2x1")
                             .font(.system(size: 11))
-                            .foregroundColor(.indigo)
+                            .foregroundColor(.blue)
                         Text("Ciltlere Böl (Multi-volume)")
                             .font(.system(size: 11.5))
                     }
@@ -488,7 +488,7 @@ public struct CompressDialog: View {
 
             if simulation.savingsPercentage > 0 {
                 HStack(spacing: 4) {
-                    Image(systemName: "sparkles")
+                    Image(systemName: "arrow.down.right.and.arrow.up.left")
                         .font(.system(size: 9))
                     Text("%\(String(format: "%.0f", simulation.savingsPercentage)) Tasarruf")
                         .font(.system(size: 10.5, weight: .semibold))

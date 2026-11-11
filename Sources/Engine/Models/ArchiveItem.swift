@@ -164,8 +164,8 @@ public struct ArchiveItem: Identifiable, Hashable, Sendable {
         case "pdf": return .red
         case "doc", "docx", "pages", "txt", "md": return .blue
         case "xls", "xlsx", "numbers", "csv": return .green
-        case "ppt", "pptx", "key": return .indigo
-        case "png", "jpg", "jpeg", "heic", "webp": return .purple
+        case "ppt", "pptx", "key": return .orange
+        case "png", "jpg", "jpeg", "heic", "webp": return .blue
         case "mp4", "mov", "mkv": return .pink
         case "mp3", "m4a", "flac": return .cyan
         case "zip", "rar", "7z": return AppSettings.shared.accentColorChoice.color

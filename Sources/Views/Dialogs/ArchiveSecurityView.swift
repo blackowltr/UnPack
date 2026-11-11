@@ -190,7 +190,7 @@ public struct ArchiveSecurityView: View {
                 // Güvenlik Özeti Değerlendirme Kartı
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 6) {
-                        Image(systemName: "sparkles")
+                        Image(systemName: "shield.lefthalf.filled")
                             .foregroundColor(badgeColor)
                             .font(.system(size: 13))
                         Text("Güvenlik Değerlendirmesi")

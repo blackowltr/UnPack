@@ -130,7 +130,7 @@ public struct ExtractDialog: View {
 
                                 Divider()
 
-                                Toggle("⚡ Alan Açarak Çıkar (Düşük Disk Alanı Modu)", isOn: $useSpaceSaverMode)
+                                Toggle("Alan Açarak Çıkar (Düşük Disk Alanı Modu)", isOn: $useSpaceSaverMode)
                                     .font(.system(size: 12, weight: .medium))
 
                                 Text("Arşivden çıkarılan dosyaların bloklarını anında serbest bırakarak (macOS APFS Blok Delme / Reverse Truncation) yetersiz disk alanında bile çıkarmayı sağlar.")

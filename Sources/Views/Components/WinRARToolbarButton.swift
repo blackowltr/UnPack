@@ -29,38 +29,20 @@ public struct WinRARToolbarButton: View {
             VStack(spacing: 3) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .fill(
-                            LinearGradient(
-                                colors: [
-                                    color.opacity(isHovered ? 0.25 : 0.16),
-                                    color.opacity(isHovered ? 0.14 : 0.07)
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        )
+                        .fill(isHovered ? Color.primary.opacity(0.08) : Color(NSColor.controlBackgroundColor).opacity(0.7))
                         .frame(width: 36, height: 32)
                         .overlay(
                             RoundedRectangle(cornerRadius: 8, style: .continuous)
                                 .strokeBorder(
-                                    LinearGradient(
-                                        colors: [
-                                            color.opacity(isHovered ? 0.55 : 0.32),
-                                            color.opacity(isHovered ? 0.30 : 0.14)
-                                        ],
-                                        startPoint: .top,
-                                        endPoint: .bottom
-                                    ),
-                                    lineWidth: 1
+                                    Color(NSColor.separatorColor).opacity(isHovered ? 0.55 : 0.30),
+                                    lineWidth: 0.6
                                 )
                         )
-                        .shadow(color: color.opacity(isHovered ? 0.25 : 0.08), radius: isHovered ? 4 : 2, x: 0, y: 1)
 
                     Image(systemName: icon)
-                        .font(.system(size: 16, weight: .semibold))
+                        .font(.system(size: 15, weight: .semibold))
                         .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(color)
-                        .scaleEffect(isHovered ? 1.06 : 1.0)
                 }
 
                 Text(title)

@@ -28,7 +28,7 @@ public struct ProgressModalView: View {
         if title.contains("Çıkart") {
             return "tray.and.arrow.down.fill"
         } else if title.contains("Temizle") {
-            return "sparkles"
+            return "trash.slash.fill"
         } else if title.contains("Test") {
             return "checkmark.shield.fill"
         } else if title.contains("Dönüştür") {
