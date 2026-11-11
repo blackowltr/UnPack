@@ -142,7 +142,19 @@ public struct SettingsView: View {
                                 }
                             )
                         case .about:
-                            AboutSettingsPane(isPresented: $isPresented)
+                            AboutSettingsPane(
+                                isPresented: $isPresented,
+                                onShowFeedback: { msg in
+                                    withAnimation {
+                                        viewState.feedbackMessage = msg
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                                        withAnimation {
+                                            viewState.feedbackMessage = nil
+                                        }
+                                    }
+                                }
+                            )
                         }
                     }
                     .padding(24)
@@ -773,261 +785,10 @@ private struct FinderSettingsPane: View {
 // MARK: - 6. Hakkında Paneli
 private struct AboutSettingsPane: View {
     @Binding var isPresented: Bool
-    @ObservedObject private var updateChecker = UpdateChecker.shared
-    @State private var showReleaseNotesSheet: Bool = false
+    let onShowFeedback: (String) -> Void
 
     var body: some View {
-        VStack(spacing: 18) {
-            // Logo ve Başlık
-            VStack(spacing: 10) {
-                if let appIcon = NSApplication.shared.applicationIconImage {
-                    Image(nsImage: appIcon)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 80, height: 80)
-                        .shadow(color: Color.black.opacity(0.18), radius: 8, y: 3)
-                } else {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 20, style: .continuous)
-                            .fill(Color.accentColor)
-                            .frame(width: 80, height: 80)
-
-                        Image(systemName: "archivebox.fill")
-                            .font(.system(size: 38, weight: .bold))
-                            .foregroundColor(.white)
-                    }
-                }
-
-                VStack(spacing: 4) {
-                    Text("UnPack")
-                        .font(.system(size: 22, weight: .bold))
-                    Text("Sürüm \(updateChecker.currentVersion) (Universal)")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.secondary)
-                }
-
-                Text("macOS için Hızlı, Güvenli ve Sade Arşiv Yöneticisi")
-                    .font(.system(size: 12))
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-
-            // Güncelleme & GitHub Yayınları Kartı
-            SettingsCard(title: "Yazılım Güncelleme & GitHub") {
-                VStack(spacing: 0) {
-                    SettingsRow(
-                        icon: "arrow.triangle.2.circlepath",
-                        iconColor: .blue,
-                        title: "Güncellemeleri Denetle",
-                        subtitle: updateChecker.lastCheckStatus ?? "GitHub Releases üzerinden yeni sürümleri denetler."
-                    ) {
-                        Button {
-                            Task {
-                                await updateChecker.checkForUpdates(manual: true)
-                            }
-                        } label: {
-                            if updateChecker.isChecking {
-                                HStack(spacing: 6) {
-                                    ProgressView()
-                                        .controlSize(.small)
-                                    Text("Denetleniyor...")
-                                }
-                            } else {
-                                Label("Güncellemeleri Denetle", systemImage: "arrow.clockwise")
-                            }
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.regular)
-                        .disabled(updateChecker.isChecking)
-                    }
-
-                    CardRowDivider()
-
-                    SettingsRow(
-                        icon: "link",
-                        iconColor: .gray,
-                        title: "GitHub Deposu",
-                        subtitle: "github.com/\(updateChecker.repoSlug)"
-                    ) {
-                        Button("GitHub'da Aç") {
-                            if let url = URL(string: "https://github.com/\(updateChecker.repoSlug)") {
-                                NSWorkspace.shared.open(url)
-                            }
-                        }
-                        .buttonStyle(.bordered)
-                        .controlSize(.regular)
-                    }
-
-                    CardRowDivider()
-
-                    SettingsRow(
-                        icon: "doc.text.magnifyingglass",
-                        iconColor: .orange,
-                        title: "Sürüm Notları & Yenilikler",
-                        subtitle: "v\(updateChecker.currentVersion) ile gelen tüm yeni özellik ve optimizasyonlar"
-                    ) {
-                        Button("Yenilikleri Gör") {
-                            showReleaseNotesSheet = true
-                        }
-                        .buttonStyle(.bordered)
-                        .controlSize(.regular)
-                    }
-                }
-            }
-
-            // Mimari ve Teknik Özellikler Kartı
-            SettingsCard(title: "Motor & Sistem Mimarisi") {
-                VStack(spacing: 0) {
-                    InfoDetailRow(title: "Arşiv Motoru", value: "7-Zip Core + libarchive Native Engine")
-                    CardRowDivider()
-                    InfoDetailRow(title: "Desteklenen Biçimler", value: "RAR, ZIP, 7Z, TAR, GZ, BZ2, XZ, ISO, CAB, WIM")
-                    CardRowDivider()
-                    InfoDetailRow(title: "Şifreleme Desteği", value: "AES-256 Bit Askeri Standart & Başlık Gizleme")
-                    CardRowDivider()
-                    InfoDetailRow(title: "İşlemci Desteği", value: "Apple Silicon (M1/M2/M3/M4) + Intel 64-bit")
-                    CardRowDivider()
-                    InfoDetailRow(title: "Gizlilik & Güvenlik", value: "%100 Çevrimdışı, Sıfır Telemetri")
-                }
-            }
-
-            // Telif Hakkı ve Bildirim
-            VStack(spacing: 4) {
-                Text("Tüm hakları saklıdır. macOS Sonoma & Sequoia ile tam uyumludur.")
-                    .font(.system(size: 11))
-                    .foregroundColor(.secondary)
-            }
-            .padding(.top, 4)
-        }
-        .sheet(isPresented: $showReleaseNotesSheet) {
-            VStack(spacing: 16) {
-                HStack(spacing: 12) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10, style: .continuous)
-                            .fill(Color.orange)
-                            .frame(width: 36, height: 36)
-
-                        Image(systemName: "doc.text.magnifyingglass")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(.white)
-                    }
-
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("UnPack Yenilikler & Sürüm Notları")
-                            .font(.system(size: 15, weight: .bold))
-                        Text("UnPack v\(updateChecker.currentVersion) Sürüm Detayları")
-                            .font(.system(size: 11.5))
-                            .foregroundColor(.secondary)
-                    }
-
-                    Spacer()
-
-                    Button("Tamam") {
-                        showReleaseNotesSheet = false
-                    }
-                    .keyboardShortcut(.defaultAction)
-                    .buttonStyle(.borderedProminent)
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 20)
-
-                Divider()
-
-                ReleaseNotesMarkdownView(markdown: currentReleaseNotes)
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 20)
-            }
-            .frame(width: 540, height: 480)
-            .background(Color(NSColor.windowBackgroundColor))
-        }
-    }
-
-    private var currentReleaseNotes: String {
-        if let body = UpdateDownloadManager.shared.releaseInfo?.body, !body.isEmpty {
-            return body
-        }
-        return """
-        ## UnPack v1.9.0
-
-        macOS Human Interface Guidelines standartlarına uygun yerel arayüz yenilemesi, Canlı Arşiv İçi Dosya Düzenleme ve güncellenmiş dokümantasyonla sunulan kararlı sürüm.
-
-        ### Özgün macOS Arayüzü & Sürüm Yenilikleri
-        - **Saf Apple Tasarım Dili:** Gezgin, Tercihler, Onboarding, Sıkıştırma, Çıkarma ve İlerleme pencerelerinden gereksiz süslemeler kaldırıldı; standart macOS tipografisi ve yerel kontroller uygulandı.
-        - **Canlı Arşiv İçi Düzenleme (In-Place Edit):** Arşivdeki dosyaları harici uygulamalarda düzenleyip anlık SHA-256 ve değişiklik takibiyle tek tıkla arşive geri işleyin.
-        - **Yerel Güncelleme & Sürüm Notları Görünümü:** Markdown sürüm notları, indirme ilerleme penceresi ve otomatik DMG kurulumu sistem standartlarıyla hizalandı.
-        - **Retina Ekran Görüntüleri & Dokümantasyon:** Uygulama ekran görüntüleri ve web tanıtım sayfası `v1.9.0` sürümüyle birebir güncellendi.
-
-        ## UnPack v1.8.6
-
-        Arşiv içerisindeki dosyaları harici uygulamalarda doğrudan düzenleme, canlı dosya izleme ve arşivi anında güncelleme özellikleri eklendi.
-
-        ### Canlı Arşiv İçi Dosya Düzenleme (In-Place Edit)
-        - **Varsayılan Uygulamayla Aç & Düzenle:** Arşivdeki herhangi bir dosyayı TextEdit, VS Code, Xcode veya sistem varsayılan uygulamanızla doğrudan açıp düzenleyebilirsiniz.
-        - **Anlık Değişiklik Algılama:** Düzenlenen dosyanın kaydedilmesi durumunda dosya boyutu, değişiklik tarihi ve SHA-256 hash kontrolleriyle anında tespit edilir.
-        - **Akıllı Güncelleme Onay Bandı:** Düzenleme yapıldığında arşiv gezgininde yerel bir onay bandı belirir; tek tıkla arşivi güncelleyebilir veya değişikliği yoksayabilirsiniz.
-        - **Otomatik Güncelleme Tercihi:** Tercihler > Genel sekmesinden düzenlenen dosyaların onay sorulmadan doğrudan arşive işlenmesi seçilebilir.
-
-        ## UnPack v1.8.5
-
-        Yapay zeka arayüz klişelerinden tamamen arındırılmış, macOS Human Interface Guidelines (HIG) standartlarında zarif ve yerel Apple tasarım dili.
-
-        ### Özgün macOS Arayüz Tasarımı
-        - **Sade ve Doğal Apple Standartları:** Sahne arkası kromatik ışık parıltıları ve aşırı renkli dekoratif efektler kaldırıldı; Apple'ın özgün macOS tasarım felsefesi uygulandı.
-        - **macOS Resmi 8 Vurgu Rengi:** Sistem Ayarları ile uyumlu resmi Apple renk paleti (Mavi, Mor, Pembe, Kırmızı, Turuncu, Sarı, Yeşil, Grafit) entegre edildi.
-        - **Finder Tarzı Yol Çubuğu & Arama:** Dosya hiyerarşisinde gezinmeyi kolaylaştıran kompakt yol çubuğu ve standart arama alanı oluşturuldu.
-        - **Yerel Segmented Kontroller:** Araç çubuğu ve pencere kontrollerinde yerel macOS `.bordered` ve `.segmented` buton stillerine geçildi.
-        - **Yalın İlerleme Paneli:** Dönen yörüngeler yerine sistemle uyumlu `ProgressView` ve metrik kartları getirildi.
-
-        ## UnPack v1.8.0
-
-        Yetersiz disk alanına sahip Mac'lerde büyük arşivlerin açılabilmesini sağlayan "Alan Açarak Çıkarma (Space-Saving In-Place Extraction)" modu eklendi. Çıkarılan dosyaların arşivdeki blokları adım adım serbest bırakılarak minimum boş alanda ayıklama yapılır.
-
-        ### Alan Açarak Çıkarma (Düşük Disk Alanı Modu)
-        - **Minimum Tepe Disk Kullanımı:** Normalde `Arşiv Boyutu + Çıkarılan Dosyalar` kadar boş alan gerekirken; Alan Açma Modu ile yalnızca en büyük tek dosya boyutu kadar alanla 50-100 GB devasa arşivleri bile açabilirsiniz.
-        - **macOS APFS Blok Delme (Sparse Hole Punching):** macOS APFS dosya sistemi üzerinde `F_PUNCHHOLE` çağrısı kullanılarak çıkarılan her dosyanın disk blokları anında deallocate edilir ve işletim sistemine geri kazandırılır.
-        - **Ters Kısaltma (Reverse Truncation) & Kuyruk Koruma:** APFS harici disklerde ve ZIP/TAR arşivlerinde dosyalar sondan başa doğru ayıklanır; her adımda `ftruncate` ile arşiv küçültülür.
-        - **Çökme ve Kesinti Korumalı Günlükleme (Journaling):** `.unpack-journal.json` sayesinde işlem elektrik kesintisi veya iptal ile yarıda kalsa bile arşiv bozulmaz; UnPack açıldığında tek tıkla kaldığı yerden devam eder.
-        - **Akıllı Ön Kontrol (Pre-flight Space Check):** Hedef diskte yeterli alan olup olmadığı çıkarma öncesinde simüle edilir; alan kritikse kullanıcıya otomatik Alan Açma Modu önerilir.
-        - **Çok Parçalı Arşiv (Multi-part) Otomatik Tasarrufu:** `.part1.rar` veya `.7z.001` gibi çok ciltli arşivlerde tamamlanan ciltler anında temizlenerek disk alanı serbest bırakılır.
-
-        ## UnPack v1.7.2
-
-        RAM ve CPU tüketimini en aza indirgeyen, arka plan işlemlerini ve dosya önbelleğini optimize eden yüksek verimlilik güncellemesi.
-
-        ### Düşük RAM ve CPU Tüketimi Optimizasyonları
-        - **Otomatik Temizlenen Simge Önbelleği:** Dosya simgeleri artık `NSCache` altyapısıyla yönetilmekte; sistem bellek baskısı hissettiğinde otomatik tahliye edilerek RAM şişmesi engellenmektedir.
-        - **Düşük CPU ve Güç Tüketimi:** Arşivleme ve çıkarma sırasındaki boru hattı okuma döngüleri optimize edildi. Gereksiz uyandırmalar azaltılarak CPU çekirdeklerinin düşük güç durumunda kalması sağlandı.
-        - **Sıfır Gecikmeli Liste Filtreleme:** Arama ve klasör içi dosya listelemeleri önbelleğe alınarak her kullanıcı etkileşiminde tekrarlanan CPU filtreleme yükü ortadan kaldırıldı.
-        - **Otomatik Geçici Alan Temizliği:** Hızlı bakış ve sürükle-bırak için açılan geçici dosyalar periyodik olarak temizlenerek disk ve bellek sağlığı güvenceye alındı.
-        - **Zamanlayıcı Birleştirme (Timer Coalescing):** Arka plan güncelleme denetimleri macOS enerji tasarrufu standartlarına uygun şekilde optimize edildi.
-
-        ## UnPack v1.7.1
-
-        Performans, verimlilik ve dosya ilişkilendirme süreçlerini optimize eden bu güncelleme; macOS sistem uyumluluğunu en üst düzeye taşır.
-
-        ### Performans ve Verimlilik İyileştirmeleri
-        - **Toplu Dosya Eşitleme:** İlk kurulumda ve açılışta arşiv formatları artık tek tek sormak yerine tek bir onayla arka planda topluca UnPack ile eşleştirilir.
-        - **Motor Önbellekleme:** Arşiv motoru ikili yol aramaları ve dosya kontrol çağrıları optimize edilerek her işlemdeki disk I/O yükü azaltıldı.
-        - **Akıcı İlerleme Eğrisi:** Sıkıştırma ve arşivleme ekranındaki yüzde hesaplamaları yumuşatılarak %95 seviyesinde yaşanan yapay duraklamalar giderildi.
-        - **Arka Plan Önbellek Tazeleme:** Finder simge önbelleği ve QuickLook yenileme işlemleri ana iş parçacığını bloke etmeden asenkron çalışacak şekilde uyarlandı.
-
-        ## UnPack v1.7.0
-
-        UnPack; sadeleştirilmiş yeni kimliği, modern Apple standartlarında arşiv oluşturma arayüzü, sessiz arka plan güncelleme sistemi ve doğrudan Finder sağ tık entegrasyonuyla güncellendi.
-
-        ### Tasarım ve Kullanıcı Deneyimi Yenilikleri
-
-        - **Sadeleştirilmiş Araç Çubuğu:** Klasik buton kalabalığı kaldırıldı; birincil çıkarma ve ekleme eylemleri, hızlı önizleme araçları ve gelişmiş özellikler düzenli bir araç çubuğunda toplandı.
-        - **Finder Tarzı Izgara (Grid) Görünümü:** Arşiv içeriğini ayrıntılı tablonun yanı sıra büyük önizleme kartları halinde görüntüleme seçeneği eklendi. Araç çubuğundan tek tıkla Liste ve Izgara arasında geçiş yapabilirsiniz.
-        - **Apple Yol ve Spotlight Arama Çubuğu:** Klasör hiyerarşisinde rahatça gezinmeyi sağlayan tıklanabilir yol çubuğu ve Spotlight arama kutusu baştan tasarlandı.
-        - **Zarif Boş Durumlar:** Henüz arşiv açılmadığında veya boş klasörlere girildiğinde kullanıcıyı karşılayan net Apple simge ve yönlendirmeleri eklendi.
-        - **Klavye Kısayol Rozetleri:** Alt çubuğa Space ile hızlı bakış ve ⌘E ile çıkarma kısayollarını hatırlatan tuş rozetleri yerleştirildi.
-
-        ### Sistem Uyumluluğu
-        - **Evrensel Destek:** Apple Silicon (M1, M2, M3, M4) ve Intel (x86_64) işlemcili Mac bilgisayarlarla tam uyumludur.
-        - **İşletim Sistemi:** macOS Sonoma (14.0) ve macOS Sequoia (15.0) sürümlerini destekler.
-        """
+        AboutContentView(onShowFeedback: onShowFeedback)
     }
 }
 
@@ -1151,26 +912,6 @@ private struct FinderMockMenuItem: View {
 
             Spacer()
         }
-    }
-}
-
-/// Hakkında detay satırı
-private struct InfoDetailRow: View {
-    let title: String
-    let value: String
-
-    var body: some View {
-        HStack {
-            Text(title)
-                .font(.system(size: 12, weight: .medium))
-                .foregroundColor(.secondary)
-            Spacer()
-            Text(value)
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(.primary)
-        }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 10)
     }
 }
 

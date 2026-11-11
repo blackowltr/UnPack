@@ -566,7 +566,7 @@ private struct SettingsScreenshotView: View {
                     Spacer()
 
                     VStack(spacing: 2) {
-                        Text("UnPack v1.9.0")
+                        Text("UnPack v1.9.1")
                             .font(.system(size: 10, weight: .semibold))
                             .foregroundColor(.secondary)
                         Text("Universal (Apple & Intel)")
@@ -726,11 +726,11 @@ private struct UpdaterScreenshotView: View {
                     }
 
                     VStack(alignment: .leading, spacing: 3) {
-                        Text("Yeni Sürüm Mevcut: v1.9.0")
+                        Text("Yeni Sürüm Mevcut: v1.9.1")
                             .font(.system(size: 16, weight: .bold))
                             .foregroundColor(.primary)
 
-                        Text("Mevcut: v1.8.5 • Hedef: v1.9.0 (Önerilen Güncelleme)")
+                        Text("Mevcut: v1.9.0 • Hedef: v1.9.1 (Önerilen Güncelleme)")
                             .font(.system(size: 11.5))
                             .foregroundColor(.secondary)
                     }
@@ -775,7 +775,7 @@ private struct UpdaterScreenshotView: View {
                         Text("İndiriliyor... %74")
                             .font(.system(size: 11.5, weight: .semibold))
                         Spacer()
-                        Text("12,8 MB / 17,3 MB (4,2 MB/sn)")
+                        Text("12,8 MB / 17,9 MB (4,2 MB/sn)")
                             .font(.system(size: 11))
                             .foregroundColor(.secondary)
                     }

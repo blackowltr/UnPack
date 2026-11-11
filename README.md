@@ -109,7 +109,7 @@ Apple Silicon (M1–M4) ve Intel işlemcili Mac bilgisayarlarda yerel (Universal
 
 ## Kurulum
 
-1. En son sürüm yükleyicisini (`UnPack-1.9.0.dmg`) **[Releases](https://github.com/blackowltr/UnPack/releases)** sayfasından indirin.
+1. En son sürüm yükleyicisini (`UnPack-1.9.1.dmg`) **[Releases](https://github.com/blackowltr/UnPack/releases)** sayfasından indirin.
 2. İndirilen DMG dosyasını açın.
 
 ### ⚡ Önerilen Hızlı Kurulum (Tek Tıkla)

@@ -14,8 +14,14 @@ struct UnPackApp: App {
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified(showsTitle: true))
         .commands {
-            // App Menu Ekleri (Check for Updates, File Associations, Quick Actions, RAR Tool)
-            CommandGroup(after: .appInfo) {
+            // App Menu Ekleri (Hakkında, Check for Updates, File Associations, Quick Actions, RAR Tool)
+            CommandGroup(replacing: .appInfo) {
+                Button("UnPack Hakkında") {
+                    AboutWindowController.shared.show()
+                }
+
+                Divider()
+
                 Button("menu.checkUpdates".loc) {
                     Task {
                         await UpdateChecker.shared.checkForUpdates(manual: true)
